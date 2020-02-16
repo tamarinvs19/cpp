@@ -4,15 +4,19 @@
 #include <stdint.h>
 #include <ostream>
 #include <istream>
+#include <iostream>
+#include <vector>
 
 class Employee {
     public:
-	virtual int salary() const {};
-	virtual int getBaseSalary() const {
+	virtual int get_base_salary() const {
 	    return _base_salary;
 	};
-	virtual char * getName() {
+	virtual char * get_name() const {
 	    return _name;
+	};
+	virtual int salary() const {
+	    return get_base_salary();
 	};
 	friend std::ostream& operator<<(std::ostream&, const Employee&);
 	friend std::istream& operator>>(std::istream&, const Employee&);
@@ -22,12 +26,12 @@ class Employee {
 };
 class Developer: public Employee {
     public:
-	int salary() const override {
+	int salary() const {
 	    int salary = _base_salary;
 	    if (_has_bonus) { salary += 1000; }
 	    return salary;
 	}
-	bool getHasBonus() {
+	bool get_has_bonus() {
 	    return _has_bonus;
 	};
 	friend std::ostream& operator<<(std::ostream&, const Developer&);
@@ -43,13 +47,13 @@ class Developer: public Employee {
 
 class SalesManager: public Employee {
     public:
-	int salary() const override {
+	int salary() const {
 	    return _base_salary + _sold_nm * _price * 0.01;
 	}
-	int getSoldNm() {
+	int get_sold_nm() {
 	    return _sold_nm;
 	}
-	int getPrice() {
+	int get_price() {
 	    return _price;
 	}
 	friend std::ostream& operator<<(std::ostream&, const SalesManager&);
@@ -66,12 +70,27 @@ class SalesManager: public Employee {
 
 class EmployeesArray {
     public:
-	void add(const Employee *e);
-	int total_salary() const;
+	void add(Employee* e) {
+	    _employees.push_back(e);
+	}
+	int total_salary() const {
+	    int32_t total_salary = 0;
+	    for (Employee* e: _employees) {
+		total_salary += e->salary();
+	    }
+	    return total_salary;
+	}
 	friend std::ostream& operator<<(std::ostream&, const EmployeesArray&);
 	friend std::istream& operator>>(std::istream&, const EmployeesArray&);
+	EmployeesArray (std::vector<Employee*> employees) {
+	    for (Employee* e: employees) {
+		add(e);
+	    }
+	}
+	EmployeesArray () {}
     private:
-	Employee **_employees;
+	std::vector <Employee*> _employees;
+	// Employee **_employees;
 };
 
 #endif
