@@ -46,8 +46,20 @@ class SalesManager: public Employee {
 	int salary() const override {
 	    return _base_salary + _sold_nm * _price * 0.01;
 	}
+	int getSoldNm() {
+	    return _sold_nm;
+	}
+	int getPrice() {
+	    return _price;
+	}
 	friend std::ostream& operator<<(std::ostream&, const SalesManager&);
 	friend std::istream& operator>>(std::istream&, const SalesManager&);
+	SalesManager (char *name, int32_t base_salary, int32_t sold_nm, int32_t price) {
+	    _name = name;
+	    _base_salary = base_salary;
+	    _sold_nm = sold_nm;
+	    _price = price;
+	}
     private:
 	int32_t _sold_nm, _price;
 };
