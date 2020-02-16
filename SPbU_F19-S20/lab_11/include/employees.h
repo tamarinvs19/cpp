@@ -28,7 +28,7 @@ class Employee {
 	};
 
 	friend std::ostream& operator<<(std::ostream&, const Employee&);
-	friend std::istream& operator>>(std::istream&, const Employee&);
+	friend std::istream& operator>>(std::istream&, Employee&);
     protected:
 	char *_name;
 	int32_t _base_salary;
@@ -52,7 +52,6 @@ class Developer: public Employee {
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-
 	
 	friend std::ostream& operator<<(std::ostream&, const Developer&);
 	friend std::istream& operator>>(std::istream&, const Developer&);
@@ -61,6 +60,7 @@ class Developer: public Employee {
 	    _base_salary = base_salary;
 	    _has_bonus = has_bonus;
 	}
+	Developer () {}
     private:
 	bool _has_bonus;
 };
@@ -94,6 +94,7 @@ class SalesManager: public Employee {
 	    _sold_nm = sold_nm;
 	    _price = price;
 	}
+	SalesManager () {}
     private:
 	int32_t _sold_nm, _price;
 };
@@ -104,7 +105,6 @@ class EmployeesArray {
 	    _employees.push_back(e);
 	}
 	std::vector <Employee*> get_employees() {
-	    std::cout << _employees.size();
 	    for (Employee* e: _employees) {
 		std::cout << e->salary();
 	    }
