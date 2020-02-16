@@ -5,12 +5,7 @@
 
 
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
-    std::stringstream ss;
-    ss << "Developer\n" << 
-	"Name: " << developer.get_name() << "\n" <<
-	"Base Salary: " << developer.get_base_salary() << "\n"
-	"Has bonus: " << (developer.get_has_bonus() ? "+" : "-") << "\n";
-    std::string res_str = ss.str();
+    std::string res_str = developer.get_info();
     const char * res = res_str.c_str();
     os.write(res, std::strlen(res)+1);
     return os;
@@ -21,21 +16,26 @@ std::istream& operator>>(std::istream& is, const Developer& developer) {
 
 std::ostream& operator<<(std::ostream& os, SalesManager& sales_manager) {
     std::stringstream ss;
-    ss << "Sales Manager\n" << 
-	"Name: " << sales_manager.get_name() << "\n" <<
-	"Base Salary: " << sales_manager.get_base_salary() << "\n"
-	"Sold items: " << sales_manager.get_sold_nm() << "\n"
-	"Item price: " << sales_manager.get_price() << "\n";
-    std::string res_str = ss.str();
+    std::string res_str = sales_manager.get_info();
     const char * res = res_str.c_str();
     os.write(res, std::strlen(res)+1);
     return os;
 }
 
-std::istream& operator<<(std::istream& is, const SalesManager& sales_manager) {
+std::istream& operator>>(std::istream& is, const SalesManager& sales_manager) {
 }
 
-std::ostream& operator>>(std::ostream& os, const EmployeesArray& employees_array) {
+std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
+    std::stringstream ss;
+    std::vector <Employee*> emps = employees_array.get_employees();
+    for (int i=1; i<=(emps.size()); i++) {
+	ss << i << ". " << emps[i-1]->get_info();
+    }
+    ss << "== Total salary: " << employees_array.total_salary() << "\n\n";
+    std::string res_str = ss.str();
+    const char * res = res_str.c_str();
+    os.write(res, std::strlen(res)+1);
+    return os;
 }
 
 std::istream& operator<<(std::istream& is, const EmployeesArray& employees_array) {
@@ -49,10 +49,11 @@ int main() {
     std::cout << sm;
 
     std::vector <Employee*> employees = {&dev};
-    EmployeesArray ea(employees);
+    EmployeesArray ea;
     ea.add(&dev);
     ea.add(&sm);
-    std::cout << ea.total_salary();
+
+    std::cout << ea;
 
     return 0;
 }

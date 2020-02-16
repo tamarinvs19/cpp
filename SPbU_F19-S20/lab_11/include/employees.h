@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include <ostream>
 #include <istream>
-#include <iostream>
+#include <sstream>
 #include <vector>
+#include <iostream>
 
 class Employee {
     public:
@@ -18,6 +19,14 @@ class Employee {
 	virtual int salary() const {
 	    return get_base_salary();
 	};
+	virtual std::string get_info() const {
+	    std::stringstream ss;
+	    ss << "Name: " << get_name() << "\n" <<
+	    "Base Salary: " << get_base_salary() << "\n";
+	    std::string res_str = ss.str();
+	    return res_str;
+	};
+
 	friend std::ostream& operator<<(std::ostream&, const Employee&);
 	friend std::istream& operator>>(std::istream&, const Employee&);
     protected:
@@ -31,9 +40,20 @@ class Developer: public Employee {
 	    if (_has_bonus) { salary += 1000; }
 	    return salary;
 	}
-	bool get_has_bonus() {
+	bool get_has_bonus() const {
 	    return _has_bonus;
 	};
+	std::string get_info() const {
+	    std::stringstream ss;
+	    ss << "Developer\n" << 
+		"Name: " << get_name() << "\n" <<
+		"Base Salary: " << get_base_salary() << "\n"
+		"Has bonus: " << (get_has_bonus() ? "+" : "-") << "\n";
+	    std::string res_str = ss.str();
+	    return res_str;
+	};
+
+	
 	friend std::ostream& operator<<(std::ostream&, const Developer&);
 	friend std::istream& operator>>(std::istream&, const Developer&);
 	Developer (char *name, int32_t base_salary, bool has_bonus) {
@@ -50,12 +70,22 @@ class SalesManager: public Employee {
 	int salary() const {
 	    return _base_salary + _sold_nm * _price * 0.01;
 	}
-	int get_sold_nm() {
+	int get_sold_nm() const {
 	    return _sold_nm;
 	}
-	int get_price() {
+	int get_price() const {
 	    return _price;
 	}
+	std::string get_info() const {
+	    std::stringstream ss;
+	    ss << "Sales Manager\n" << 
+		"Name: " << get_name() << "\n" <<
+		"Base Salary: " << get_base_salary() << "\n"
+		"Sold items: " << get_sold_nm() << "\n"
+		"Item price: " << get_price() << "\n";
+	    std::string res_str = ss.str();
+	    return res_str;
+	};
 	friend std::ostream& operator<<(std::ostream&, const SalesManager&);
 	friend std::istream& operator>>(std::istream&, const SalesManager&);
 	SalesManager (char *name, int32_t base_salary, int32_t sold_nm, int32_t price) {
@@ -72,6 +102,13 @@ class EmployeesArray {
     public:
 	void add(Employee* e) {
 	    _employees.push_back(e);
+	}
+	std::vector <Employee*> get_employees() {
+	    std::cout << _employees.size();
+	    for (Employee* e: _employees) {
+		std::cout << e->salary();
+	    }
+	    return _employees;
 	}
 	int total_salary() const {
 	    int32_t total_salary = 0;
