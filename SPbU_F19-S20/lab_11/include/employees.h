@@ -54,7 +54,7 @@ class Developer: public Employee {
 	};
 	
 	friend std::ostream& operator<<(std::ostream&, const Developer&);
-	friend std::istream& operator>>(std::istream&, const Developer&);
+	friend std::istream& operator>>(std::istream&, Developer&);
 	Developer (char *name, int32_t base_salary, bool has_bonus) {
 	    _name = name;
 	    _base_salary = base_salary;
@@ -87,7 +87,7 @@ class SalesManager: public Employee {
 	    return res_str;
 	};
 	friend std::ostream& operator<<(std::ostream&, const SalesManager&);
-	friend std::istream& operator>>(std::istream&, const SalesManager&);
+	friend std::istream& operator>>(std::istream&, SalesManager&);
 	SalesManager (char *name, int32_t base_salary, int32_t sold_nm, int32_t price) {
 	    _name = name;
 	    _base_salary = base_salary;
