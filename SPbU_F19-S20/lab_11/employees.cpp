@@ -1,16 +1,25 @@
 #include "include/employees.h"
+#include "bin_manip.cpp"
 #include <cstring>
-#include <cassert>
-#include <climits>
-#include <sstream>
+#include <fstream>
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& os, const Employee& employee) {
+std::ostream& operator<<(std::ostream& os, Employee& employee) {
     os << employee.get_info();
     return os;
 }
 
+std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
+    os << employee.get_name() << employee.get_base_salary();
+    return os;
+}
+
 std::istream& operator>>(std::istream& is, Employee& employee) {
+    is >> employee._name >> employee._base_salary;
+    return is;
+}
+
+std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
     is >> employee._name >> employee._base_salary;
     return is;
 }
@@ -20,7 +29,17 @@ std::ostream& operator<<(std::ostream& os, Developer& developer) {
     return os;
 }
 
+std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
+    os << 1 << developer._name << developer._base_salary << developer._has_bonus;
+    return os;
+}
+
 std::istream& operator>>(std::istream& is, Developer& developer) {
+    is >> developer._name >> developer._base_salary >> developer._has_bonus;
+    return is;
+}
+
+std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
     is >> developer._name >> developer._base_salary >> developer._has_bonus;
     return is;
 }
@@ -42,8 +61,5 @@ std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
     }
     os << "== Total salary: " << employees_array.total_salary() << "\n\n";
     return os;
-}
-
-std::istream& operator<<(std::istream& is, EmployeesArray& employees_array) {
 }
 

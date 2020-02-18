@@ -28,6 +28,8 @@ class Employee {
 	};
 	friend std::ostream& operator<<(std::ostream&, Employee&);
 	friend std::istream& operator>>(std::istream&, Employee&);
+	friend std::ofstream& operator>>(std::ofstream&, Employee&);
+	friend std::ifstream& operator>>(std::ifstream&, Employee&);
     protected:
 	std::string _name;
 	int32_t _base_salary;
@@ -54,6 +56,8 @@ class Developer: public Employee {
 	
 	friend std::ostream& operator<<(std::ostream&, Developer&);
 	friend std::istream& operator>>(std::istream&, Developer&);
+	friend std::ofstream& operator<<(std::ofstream&, Developer&);
+	friend std::ifstream& operator>>(std::ifstream&, Developer&);
 	Developer (std::string name, int32_t base_salary, bool has_bonus) {
 	    _name = name;
 	    _base_salary = base_salary;

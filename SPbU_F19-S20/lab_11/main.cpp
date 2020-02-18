@@ -2,20 +2,8 @@
 #include <iostream>
 
 int main() {
-    // Developer dev("Bob", 1000, true);
-    // std::cout << dev;
-    //
-    // SalesManager sm("Alica", 100, 20, 300);
-    // std::cout << sm;
-    //
-    // std::vector <Employee*> employees = {&dev};
-    // EmployeesArray ea;
-    // ea.add(&dev);
-    // ea.add(&sm);
-    //
-    // std::cout << ea;
-
     EmployeesArray employees_array;
+    Developer dev("Bob", 1000, true);
     std::string command;
     while (command != "exit") {
 	std::cin >> command;
@@ -35,6 +23,17 @@ int main() {
 		std::cin >> *new_sm;
 		employees_array.add(new_sm);
 	    }
+	}
+	else if (command == "save") {
+	    std::string file_name;
+	    std::cin >> file_name;
+	    std::ofstream f(file_name, std::ios::binary);
+	    f << dev;
+	    f.close();
+	    std::ifstream f_in(file_name, std::ios::binary); // отрываем файл в бинарном формате
+	    Developer old;
+	    f_in >> old;
+	    std::cout << old;
 	}
     }
     return 0;
