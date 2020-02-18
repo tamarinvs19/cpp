@@ -26,16 +26,14 @@ int main() {
 	    int role;
 	    std::cin >> role;
 	    if (role == 1) {
-		new Developer new_dev; 
-		std::cin >> new_dev;
-		employees_array.add(&new_dev);
-		std::cout << employees_array;
+		Developer* new_dev = new Developer; 
+		std::cin >> *new_dev;
+		employees_array.add(new_dev);
 	    }
 	    else if (role == 2) {
-		new SalesManager new_sm;
-		std::cin >> new_sm;
-		employees_array.add(&new_sm);
-		std::cout << employees_array;
+		SalesManager* new_sm = new SalesManager;
+		std::cin >> *new_sm;
+		employees_array.add(new_sm);
 	    }
 	}
     }

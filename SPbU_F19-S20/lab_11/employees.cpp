@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
     for (int i=0; i<emps.size(); i++) {
 	os << i + 1 << ". " << emps[i]->get_info();
     }
-    os << employees_array.total_salary() << "\n";
+    os << "== Total salary: " << employees_array.total_salary() << "\n\n";
     return os;
 }
 
