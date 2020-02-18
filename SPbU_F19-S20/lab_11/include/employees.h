@@ -13,7 +13,7 @@ class Employee {
 	virtual int get_base_salary() const {
 	    return _base_salary;
 	};
-	virtual char * get_name() const {
+	virtual std::string get_name() const {
 	    return _name;
 	};
 	virtual int salary() const {
@@ -26,11 +26,10 @@ class Employee {
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-
-	friend std::ostream& operator<<(std::ostream&, const Employee&);
+	friend std::ostream& operator<<(std::ostream&, Employee&);
 	friend std::istream& operator>>(std::istream&, Employee&);
     protected:
-	char *_name;
+	std::string _name;
 	int32_t _base_salary;
 };
 class Developer: public Employee {
@@ -53,9 +52,9 @@ class Developer: public Employee {
 	    return res_str;
 	};
 	
-	friend std::ostream& operator<<(std::ostream&, const Developer&);
+	friend std::ostream& operator<<(std::ostream&, Developer&);
 	friend std::istream& operator>>(std::istream&, Developer&);
-	Developer (char *name, int32_t base_salary, bool has_bonus) {
+	Developer (std::string name, int32_t base_salary, bool has_bonus) {
 	    _name = name;
 	    _base_salary = base_salary;
 	    _has_bonus = has_bonus;
@@ -86,9 +85,11 @@ class SalesManager: public Employee {
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-	friend std::ostream& operator<<(std::ostream&, const SalesManager&);
+	void sold_nm(int32_t sold_nm) { _sold_nm = sold_nm; }
+	void price(int32_t price) { _price = price; }
+	friend std::ostream& operator<<(std::ostream&, SalesManager&);
 	friend std::istream& operator>>(std::istream&, SalesManager&);
-	SalesManager (char *name, int32_t base_salary, int32_t sold_nm, int32_t price) {
+	SalesManager (std::string name, int32_t base_salary, int32_t sold_nm, int32_t price) {
 	    _name = name;
 	    _base_salary = base_salary;
 	    _sold_nm = sold_nm;
@@ -105,9 +106,6 @@ class EmployeesArray {
 	    _employees.push_back(e);
 	}
 	std::vector <Employee*> get_employees() {
-	    for (Employee* e: _employees) {
-		std::cout << e->salary();
-	    }
 	    return _employees;
 	}
 	int total_salary() const {
@@ -117,8 +115,8 @@ class EmployeesArray {
 	    }
 	    return total_salary;
 	}
-	friend std::ostream& operator<<(std::ostream&, const EmployeesArray&);
-	friend std::istream& operator>>(std::istream&, const EmployeesArray&);
+	friend std::ostream& operator<<(std::ostream&, EmployeesArray&);
+	friend std::istream& operator>>(std::istream&, EmployeesArray&);
 	EmployeesArray (std::vector<Employee*> employees) {
 	    for (Employee* e: employees) {
 		add(e);
