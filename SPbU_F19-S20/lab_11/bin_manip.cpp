@@ -3,6 +3,7 @@
 #include <climits>
 #include <cstring>
 #include <fstream>
+#include <iostream>
 
 std::ostream& operator<<(std::ostream& os, const write_le_int32& d) {
     static_assert(CHAR_BIT == 8);
@@ -60,13 +61,3 @@ std::istream& operator>>(std::istream& is, const read_c_str& d) {
     }
     return is;
 }
-// int main() {
-//     std::ofstream f("bfile.txt", std::ios::binary); // отрываем файл в бинарном формате
-//     f << 255;
-//     f.close();
-//     std::ifstream f_in("bfile.txt", std::ios::binary); // отрываем файл в бинарном формате
-//     int x;
-//     f_in >> x;
-//     std::cout << x;
-//     return 0;
-// }

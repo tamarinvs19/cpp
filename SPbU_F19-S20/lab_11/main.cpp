@@ -28,12 +28,8 @@ int main() {
 	    std::string file_name;
 	    std::cin >> file_name;
 	    std::ofstream f(file_name, std::ios::binary);
-	    f << dev;
+	    f << employees_array;
 	    f.close();
-	    std::ifstream f_in(file_name, std::ios::binary); // отрываем файл в бинарном формате
-	    Developer old;
-	    f_in >> old;
-	    std::cout << old;
 	}
     }
     return 0;

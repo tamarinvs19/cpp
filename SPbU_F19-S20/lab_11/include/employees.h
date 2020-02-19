@@ -93,6 +93,8 @@ class SalesManager: public Employee {
 	void price(int32_t price) { _price = price; }
 	friend std::ostream& operator<<(std::ostream&, SalesManager&);
 	friend std::istream& operator>>(std::istream&, SalesManager&);
+	friend std::ofstream& operator<<(std::ofstream&, SalesManager&);
+	friend std::ifstream& operator>>(std::ifstream&, SalesManager&);
 	SalesManager (std::string name, int32_t base_salary, int32_t sold_nm, int32_t price) {
 	    _name = name;
 	    _base_salary = base_salary;
@@ -120,7 +122,8 @@ class EmployeesArray {
 	    return total_salary;
 	}
 	friend std::ostream& operator<<(std::ostream&, EmployeesArray&);
-	friend std::istream& operator>>(std::istream&, EmployeesArray&);
+	friend std::ofstream& operator<<(std::ofstream&, EmployeesArray&);
+	friend std::ifstream& operator>>(std::ifstream&, EmployeesArray&);
 	EmployeesArray (std::vector<Employee*> employees) {
 	    for (Employee* e: employees) {
 		add(e);
