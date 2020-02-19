@@ -16,6 +16,7 @@ int main() {
 	    if (role == 1) {
 		Developer* new_dev = new Developer; 
 		std::cin >> *new_dev;
+		std::cout << "1";
 		employees_array.add(new_dev);
 	    }
 	    else if (role == 2) {
@@ -29,12 +30,18 @@ int main() {
 	    std::cin >> file_name;
 	    std::ofstream f(file_name, std::ios::binary);
 	    int32_t n = 100;
-	    f << write_c_str(dev.get_name());
+	    // f << write_le_int32(1) << write_c_str(dev.get_name()) << write_bool(dev.get_has_bonus());
+	    f << dev;
+	    f << dev;
 	    f.close();
-	    std::ifstream f_in(file_name, std::ios::binary); // отрываем файл в бинарном формате
-	    // Developer old;
-	    std::string old;
-	    f_in >> read_c_str(old, sizeof(old));
+	    std::ifstream f_in(file_name, std::ios::binary);
+	    Developer old;
+	    int32_t t;
+	    char * name;
+	    bool bon;
+	    // f_in >> read_le_int32(t) >> read_c_str(name, std::strlen(name)) >> read_bool(bon);
+	    // std::cout << t << " " << name << " " << bon;
+	    f_in >> old;
 	    std::cout << old;
 	}
     }

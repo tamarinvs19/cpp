@@ -13,7 +13,7 @@ class Employee {
 	virtual int get_base_salary() const {
 	    return _base_salary;
 	};
-	virtual std::string get_name() const {
+	virtual char* get_name() const {
 	    return _name;
 	};
 	virtual int salary() const {
@@ -31,7 +31,7 @@ class Employee {
 	friend std::ofstream& operator>>(std::ofstream&, Employee&);
 	friend std::ifstream& operator>>(std::ifstream&, Employee&);
     protected:
-	std::string _name;
+	char* _name;
 	int32_t _base_salary;
 };
 class Developer: public Employee {
@@ -58,7 +58,7 @@ class Developer: public Employee {
 	friend std::istream& operator>>(std::istream&, Developer&);
 	friend std::ofstream& operator<<(std::ofstream&, Developer&);
 	friend std::ifstream& operator>>(std::ifstream&, Developer&);
-	Developer (std::string name, int32_t base_salary, bool has_bonus) {
+	Developer (char* name, int32_t base_salary, bool has_bonus) {
 	    _name = name;
 	    _base_salary = base_salary;
 	    _has_bonus = has_bonus;
@@ -93,7 +93,9 @@ class SalesManager: public Employee {
 	void price(int32_t price) { _price = price; }
 	friend std::ostream& operator<<(std::ostream&, SalesManager&);
 	friend std::istream& operator>>(std::istream&, SalesManager&);
-	SalesManager (std::string name, int32_t base_salary, int32_t sold_nm, int32_t price) {
+	// friend std::ofstream& operator<<(std::ofstream&, SalesManager&);
+	// friend std::ifstream& operator>>(std::ifstream&, SalesManager&);
+	SalesManager (char* name, int32_t base_salary, int32_t sold_nm, int32_t price) {
 	    _name = name;
 	    _base_salary = base_salary;
 	    _sold_nm = sold_nm;

@@ -9,40 +9,42 @@ std::ostream& operator<<(std::ostream& os, Employee& employee) {
     return os;
 }
 
-// std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
-//     os << employee.get_name() << employee.get_base_salary();
-//     return os;
-// }
+std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
+    os << write_c_str(employee.get_name()) << write_le_int32(employee.get_base_salary());
+    return os;
+}
 
 std::istream& operator>>(std::istream& is, Employee& employee) {
+    std::cout << "1";
     is >> employee._name >> employee._base_salary;
     return is;
 }
 
-// std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
-//     is >> employee._name >> employee._base_salary;
-//     return is;
-// }
+std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
+    is >> read_c_str(employee._name, std::strlen(employee._name) + 1) >> read_le_int32(employee._base_salary);
+    return is;
+}
 
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
     os << developer.get_info();
     return os;
 }
 
-// std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
-//     os << 1 << developer._name << developer._base_salary << developer._has_bonus << '\0';
-//     return os;
-// }
+std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
+    os << write_le_int32(1) << write_c_str(developer._name) << write_le_int32(developer._base_salary) << write_bool(developer._has_bonus);
+    return os;
+}
 
 std::istream& operator>>(std::istream& is, Developer& developer) {
-    is >> developer._name >> developer._base_salary >> developer._has_bonus;
+    std::cout << "1";
+    is >> developer._name;// >> developer._base_salary >> developer._has_bonus;
     return is;
 }
 
-// std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
-//     is >> developer._name >> developer._base_salary >> developer._has_bonus;
-//     return is;
-// }
+std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
+    is >> read_c_str(developer._name, std::strlen(developer._name) + 1) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
+    return is;
+}
 
 std::ostream& operator<<(std::ostream& os, SalesManager& sales_manager) {
     os << sales_manager.get_info();
