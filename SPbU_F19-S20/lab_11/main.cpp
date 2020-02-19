@@ -28,11 +28,13 @@ int main() {
 	    std::string file_name;
 	    std::cin >> file_name;
 	    std::ofstream f(file_name, std::ios::binary);
-	    f << dev;
+	    int32_t n = 100;
+	    f << write_c_str(dev.get_name());
 	    f.close();
 	    std::ifstream f_in(file_name, std::ios::binary); // отрываем файл в бинарном формате
-	    Developer old;
-	    f_in >> old;
+	    // Developer old;
+	    std::string old;
+	    f_in >> read_c_str(old, sizeof(old));
 	    std::cout << old;
 	}
     }

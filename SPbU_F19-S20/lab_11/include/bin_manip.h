@@ -34,17 +34,17 @@ private:
 };
 
 struct write_c_str {
-    write_c_str(const char* _data) : data(_data) {}
+    write_c_str(const std::string _data) : data(_data) {}
     friend std::ostream& operator<<(std::ostream&, const write_c_str&);
 private:
-    const char* data;
+    const std::string data;
 };
 
 struct read_c_str {
-    read_c_str(char* _data, std::size_t _size) : data(_data), size(_size) {}
-    friend std::istream& operator>>(std::istream&, const read_c_str&);
+    read_c_str(std::string _data, std::size_t _size) : data(_data), size(_size) {}
+    friend std::istream& operator>>(std::istream&, read_c_str&);
 private:
-    char* data;
+    std::string data;
     std::size_t size;
 };
 

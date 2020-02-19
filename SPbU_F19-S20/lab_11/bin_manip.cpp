@@ -38,11 +38,12 @@ std::istream& operator>>(std::istream& is, const read_bool &d) {
 }
 
 std::ostream& operator<<(std::ostream& os, const write_c_str& d) {
-    os.write(d.data, std::strlen(d.data) + 1);
+    const char * nd = d.data.c_str();
+    os.write(nd, std::strlen(nd) + 1);
     return os;
 }
 
-std::istream& operator>>(std::istream& is, const read_c_str& d) {
+std::istream& operator>>(std::istream& is, read_c_str& d) {
     for (std::size_t i = 0;; i++) {
 	assert(i < d.size);
 	char c = is.get();
@@ -60,13 +61,3 @@ std::istream& operator>>(std::istream& is, const read_c_str& d) {
     }
     return is;
 }
-// int main() {
-//     std::ofstream f("bfile.txt", std::ios::binary); // отрываем файл в бинарном формате
-//     f << 255;
-//     f.close();
-//     std::ifstream f_in("bfile.txt", std::ios::binary); // отрываем файл в бинарном формате
-//     int x;
-//     f_in >> x;
-//     std::cout << x;
-//     return 0;
-// }

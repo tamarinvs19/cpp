@@ -9,40 +9,40 @@ std::ostream& operator<<(std::ostream& os, Employee& employee) {
     return os;
 }
 
-std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
-    os << employee.get_name() << employee.get_base_salary();
-    return os;
-}
+// std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
+//     os << employee.get_name() << employee.get_base_salary();
+//     return os;
+// }
 
 std::istream& operator>>(std::istream& is, Employee& employee) {
     is >> employee._name >> employee._base_salary;
     return is;
 }
 
-std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
-    is >> employee._name >> employee._base_salary;
-    return is;
-}
+// std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
+//     is >> employee._name >> employee._base_salary;
+//     return is;
+// }
 
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
     os << developer.get_info();
     return os;
 }
 
-std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
-    os << 1 << developer._name << developer._base_salary << developer._has_bonus;
-    return os;
-}
+// std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
+//     os << 1 << developer._name << developer._base_salary << developer._has_bonus << '\0';
+//     return os;
+// }
 
 std::istream& operator>>(std::istream& is, Developer& developer) {
     is >> developer._name >> developer._base_salary >> developer._has_bonus;
     return is;
 }
 
-std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
-    is >> developer._name >> developer._base_salary >> developer._has_bonus;
-    return is;
-}
+// std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
+//     is >> developer._name >> developer._base_salary >> developer._has_bonus;
+//     return is;
+// }
 
 std::ostream& operator<<(std::ostream& os, SalesManager& sales_manager) {
     os << sales_manager.get_info();
