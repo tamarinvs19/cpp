@@ -1,6 +1,7 @@
 #ifndef LAB11_EMPLOYEES_H_INCLUDED
 #define LAB11_EMPLOYEES_H_INCLUDED
 
+#include "bin_manip.h"
 #include <stdint.h>
 #include <ostream>
 #include <istream>
@@ -22,10 +23,11 @@ class Employee {
 	virtual std::string get_info() const {
 	    std::stringstream ss;
 	    ss << "Name: " << get_name() << "\n" <<
-	    "Base Salary: " << get_base_salary() << "\n";
+		"Base Salary: " << get_base_salary() << "\n";
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
+	virtual std::ofstream& get_bin_info(std::ofstream& os)  {};
 	friend std::ostream& operator<<(std::ostream&, Employee&);
 	friend std::istream& operator>>(std::istream&, Employee&);
 	friend std::ofstream& operator>>(std::ofstream&, Employee&);
@@ -46,14 +48,24 @@ class Developer: public Employee {
 	};
 	std::string get_info() const {
 	    std::stringstream ss;
-	    ss << "Developer\n" << 
+	    ss << "Developer\n" <<
 		"Name: " << get_name() << "\n" <<
 		"Base Salary: " << get_base_salary() << "\n"
 		"Has bonus: " << (get_has_bonus() ? "+" : "-") << "\n";
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-	
+	std::ofstream& get_bin_info(std::ofstream& os) {
+	    char * name = new char[_name.size() + 1];
+	    std::copy(_name.begin(), _name.end(), name);
+	    name[_name.size()] = '\0';
+	    os << write_le_int32(1) <<
+		write_c_str(name) <<
+		write_le_int32(_base_salary) <<
+		write_bool(_has_bonus);
+	    return os;
+	};
+
 	friend std::ostream& operator<<(std::ostream&, Developer&);
 	friend std::istream& operator>>(std::istream&, Developer&);
 	friend std::ofstream& operator<<(std::ofstream&, Developer&);
@@ -79,9 +91,11 @@ class SalesManager: public Employee {
 	int get_price() const {
 	    return _price;
 	}
+	void sold_nm(int32_t sold_nm) { _sold_nm = sold_nm; }
+	void price(int32_t price) { _price = price; }
 	std::string get_info() const {
 	    std::stringstream ss;
-	    ss << "Sales Manager\n" << 
+	    ss << "Sales Manager\n" <<
 		"Name: " << get_name() << "\n" <<
 		"Base Salary: " << get_base_salary() << "\n"
 		"Sold items: " << get_sold_nm() << "\n"
@@ -89,8 +103,18 @@ class SalesManager: public Employee {
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-	void sold_nm(int32_t sold_nm) { _sold_nm = sold_nm; }
-	void price(int32_t price) { _price = price; }
+	std::ofstream& get_bin_info(std::ofstream& os) {
+	    char * name = new char[_name.size() + 1];
+	    std::copy(_name.begin(), _name.end(), name);
+	    name[_name.size()] = '\0';
+	    os << write_le_int32(2) <<
+		write_c_str(name) <<
+		write_le_int32(_base_salary) <<
+		write_le_int32(_sold_nm) <<
+		write_le_int32(_price);
+	    return os;
+	};
+
 	friend std::ostream& operator<<(std::ostream&, SalesManager&);
 	friend std::istream& operator>>(std::istream&, SalesManager&);
 	friend std::ofstream& operator<<(std::ofstream&, SalesManager&);
@@ -113,6 +137,9 @@ class EmployeesArray {
 	}
 	std::vector <Employee*> get_employees() {
 	    return _employees;
+	}
+	int get_count_emplyees() {
+	    return _employees.size();
 	}
 	int total_salary() const {
 	    int32_t total_salary = 0;

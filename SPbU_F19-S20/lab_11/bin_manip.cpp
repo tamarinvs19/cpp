@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& os, const write_le_int32& d) {
+std::ofstream& operator<<(std::ofstream& os, const write_le_int32& d) {
     static_assert(CHAR_BIT == 8);
     static_assert(sizeof(d.data) == 4);
     for (std::size_t i = 0; i < sizeof(d.data); ++i) {
@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, const write_le_int32& d) {
     return os;
 }
 
-std::istream& operator>>(std::istream& is, const read_le_int32 &d) {
+std::ifstream& operator>>(std::ifstream& is, const read_le_int32 &d) {
     static_assert(CHAR_BIT == 8);
     static_assert(sizeof(d.data) == 4);
 
@@ -28,22 +28,22 @@ std::istream& operator>>(std::istream& is, const read_le_int32 &d) {
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const write_bool& d) {
+std::ofstream& operator<<(std::ofstream& os, const write_bool& d) {
     os.put(d.data ? 1 : 0);
     return os;
 }
 
-std::istream& operator>>(std::istream& is, const read_bool &d) {
+std::ifstream& operator>>(std::ifstream& is, const read_bool &d) {
     d.data = is.get();
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const write_c_str& d) {
+std::ofstream& operator<<(std::ofstream& os, const write_c_str& d) {
     os.write(d.data, std::strlen(d.data) + 1);
     return os;
 }
 
-std::istream& operator>>(std::istream& is, const read_c_str& d) {
+std::ifstream& operator>>(std::ifstream& is, const read_c_str& d) {
     for (std::size_t i = 0;; i++) {
 	assert(i < d.size);
 	char c = is.get();

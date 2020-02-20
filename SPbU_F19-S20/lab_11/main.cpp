@@ -28,7 +28,32 @@ int main() {
 	    std::string file_name;
 	    std::cin >> file_name;
 	    std::ofstream f(file_name, std::ios::binary);
+	    f << write_le_int32(employees_array.get_count_emplyees());
 	    f << employees_array;
+	    f.close();
+	}
+	else if (command == "load") {
+	    std::string file_name;
+	    std::cin >> file_name;
+	    std::ifstream f(file_name, std::ios::binary);
+	    int32_t c;
+	    f >> read_le_int32(c);
+	    std::cout << c;
+	    for (int32_t i=0; i<c; i++) {
+		int32_t role;
+		f >> read_le_int32(role);
+		std::cout << role;
+		if (role == 1) {
+		    Developer* new_dev = new Developer; 
+		    f >> *new_dev;
+		    employees_array.add(new_dev);
+		}
+		else if (role == 2) {
+		    SalesManager* new_sm = new SalesManager;
+		    f >> *new_sm;
+		    employees_array.add(new_sm);
+		}
+	    }
 	    f.close();
 	}
     }

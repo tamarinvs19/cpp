@@ -4,26 +4,29 @@
 #include <fstream>
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& os, Employee& employee) {
-    os << employee.get_info();
-    return os;
-}
-
-std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
-    os << employee.get_name() << employee.get_base_salary();
-    return os;
-}
-
-std::istream& operator>>(std::istream& is, Employee& employee) {
-    is >> employee._name >> employee._base_salary;
-    return is;
-}
-
-std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
-    is >> employee._name >> employee._base_salary;
-    return is;
-}
-
+// std::ostream& operator<<(std::ostream& os, Employee& employee) {
+//     os << employee.get_info();
+//     return os;
+// }
+//
+// std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
+//     os << employee.get_bin_info();
+//     return os;
+// }
+//
+// std::istream& operator>>(std::istream& is, Employee& employee) {
+//     is >> employee._name >> employee._base_salary;
+//     return is;
+// }
+//
+// std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
+//     char * name;
+//     is >> read_c_str(name, std::strlen(name)) >> read_le_int32(employee._base_salary);
+//     std::string sname(name);
+//     employee._name = sname;
+//     return is;
+// }
+//
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
     os << developer.get_info();
     return os;
@@ -33,7 +36,7 @@ std::ofstream& operator<<(std::ofstream& os, Developer& developer) {
     char * name = new char[developer._name.size() + 1];
     std::copy(developer._name.begin(), developer._name.end(), name);
     name[developer._name.size()] = '\0';
-    os << write_le_int32(1) << write_c_str(name) << write_le_int32(developer._base_salary) << write_bool(developer._has_bonus);
+    os << write_c_str(name) << write_le_int32(developer._base_salary) << write_bool(developer._has_bonus);
     delete [] name;
     return os;
 }
@@ -45,8 +48,7 @@ std::istream& operator>>(std::istream& is, Developer& developer) {
 
 std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
     char * name;
-    int32_t t;
-    is >> read_le_int32(t) >> read_c_str(name, std::strlen(name)) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
+    is >> read_c_str(name, std::strlen(name)) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
     std::string sname(name);
     developer._name = sname;
     return is;
@@ -70,6 +72,14 @@ std::istream& operator>>(std::istream& is, SalesManager& sales_manager) {
     return is;
 }
 
+std::ifstream& operator>>(std::ifstream& is, SalesManager& sales_manager) {
+    char * name;
+    is >> read_c_str(name, std::strlen(name)) >> read_le_int32(sales_manager._base_salary) >> read_le_int32(sales_manager._sold_nm) >> read_le_int32(sales_manager._price);
+    std::string sname(name);
+    sales_manager._name = sname;
+    return is;
+}
+
 std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
     std::vector <Employee*> emps = employees_array.get_employees();
     for (int i=0; i<emps.size(); i++) {
@@ -81,7 +91,8 @@ std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
 std::ofstream& operator<<(std::ofstream& os, EmployeesArray& employees_array) {
     std::vector <Employee*> emps = employees_array.get_employees();
     for (int i=0; i<emps.size(); i++) {
-	os << *emps[i];
+	std::cout << emps[i]->get_info();
+	emps[i]->get_bin_info(os);
     }
     return os;
 }
