@@ -6,6 +6,7 @@
 #include <ostream>
 #include <istream>
 #include <sstream>
+#include <cstring>
 #include <vector>
 #include <iostream>
 
@@ -65,6 +66,17 @@ class Developer: public Employee {
 		write_bool(_has_bonus);
 	    return os;
 	};
+	std::ifstream& set_bin_info(std::ifstream& is) {
+	    char * name;
+	    int32_t t = 1;
+	    is >> read_le_int32(t) >>
+		read_c_str(name, std::strlen(name)) >>
+		read_le_int32(_base_salary) >>
+		read_bool(_has_bonus);
+	    std::string sname(name);
+	    _name = sname;
+	    return is;
+	};
 
 	friend std::ostream& operator<<(std::ostream&, Developer&);
 	friend std::istream& operator>>(std::istream&, Developer&);
@@ -113,6 +125,18 @@ class SalesManager: public Employee {
 		write_le_int32(_sold_nm) <<
 		write_le_int32(_price);
 	    return os;
+	};
+	std::ifstream& set_bin_info(std::ifstream& is) {
+	    char * name;
+	    int32_t t = 2;
+	    is >> read_le_int32(t) >>
+		read_c_str(name, std::strlen(name)) >>
+		read_le_int32(_base_salary) >>
+		read_le_int32(_sold_nm) >>
+		read_le_int32(_price);
+	    std::string sname(name);
+	    _name = sname;
+	    return is;
 	};
 
 	friend std::ostream& operator<<(std::ostream&, SalesManager&);

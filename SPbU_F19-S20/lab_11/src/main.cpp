@@ -14,7 +14,7 @@ int main() {
 	    int role;
 	    std::cin >> role;
 	    if (role == 1) {
-		Developer* new_dev = new Developer; 
+		Developer* new_dev = new Developer;
 		std::cin >> *new_dev;
 		employees_array.add(new_dev);
 	    }
@@ -28,7 +28,6 @@ int main() {
 	    std::string file_name;
 	    std::cin >> file_name;
 	    std::ofstream f(file_name, std::ios::binary);
-	    f << write_le_int32(employees_array.get_count_emplyees());
 	    f << employees_array;
 	    f.close();
 	}
@@ -36,6 +35,7 @@ int main() {
 	    std::string file_name;
 	    std::cin >> file_name;
 	    std::ifstream f(file_name, std::ios::binary);
+	    // f >> employees_array;
 	    int32_t c;
 	    f >> read_le_int32(c);
 	    std::cout << c;
@@ -44,7 +44,7 @@ int main() {
 		f >> read_le_int32(role);
 		std::cout << role;
 		if (role == 1) {
-		    Developer* new_dev = new Developer; 
+		    Developer* new_dev = new Developer;
 		    f >> *new_dev;
 		    employees_array.add(new_dev);
 		}

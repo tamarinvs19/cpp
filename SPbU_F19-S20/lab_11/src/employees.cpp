@@ -1,4 +1,4 @@
-#include "include/employees.h"
+#include "../include/employees.h"
 #include "bin_manip.cpp"
 #include <cstring>
 #include <fstream>
@@ -48,7 +48,10 @@ std::istream& operator>>(std::istream& is, Developer& developer) {
 
 std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
     char * name;
+    // int32_t i;
+    // is >> read_le_int32(i);
     is >> read_c_str(name, std::strlen(name)) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
+    std::cout << "123" << std::endl;
     std::string sname(name);
     developer._name = sname;
     return is;
@@ -90,10 +93,31 @@ std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
 }
 std::ofstream& operator<<(std::ofstream& os, EmployeesArray& employees_array) {
     std::vector <Employee*> emps = employees_array.get_employees();
+    os << write_le_int32(emps.size());
     for (int i=0; i<emps.size(); i++) {
-	std::cout << emps[i]->get_info();
 	emps[i]->get_bin_info(os);
     }
     return os;
+}
+std::ifstream& operator>>(std::ifstream& is, EmployeesArray& employees_array) {
+    int32_t cnt;
+    is >> read_le_int32(cnt);
+    std::cout << cnt << std::endl;
+    for (int i=0; i<cnt; i++) {
+	int32_t role;
+	is >> read_le_int32(role);
+	if (role == 1) {
+	    Developer* new_dev = new Developer; 
+	    is >> *new_dev;
+	    // std::cout << role << std::endl;
+	    employees_array.add(new_dev);
+	}
+	else if (role == 2) {
+	    SalesManager* new_sm = new SalesManager;
+	    is >> *new_sm;
+	    employees_array.add(new_sm);
+	}
+    }
+    return is;
 }
 
