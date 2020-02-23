@@ -4,7 +4,6 @@
 
 int main() {
     EmployeesArray employees_array;
-    Developer dev("Bob", 1000, true);
     std::string command;
     while (command != "exit") {
 	std::cin >> command;
@@ -14,16 +13,15 @@ int main() {
 	else if (command == "add") {
 	    int role;
 	    std::cin >> role;
+	    Employee* employee = (Employee *)malloc(sizeof(Employee));
 	    if (role == 1) {
-		Developer* new_dev = new Developer;
-		std::cin >> *new_dev;
-		employees_array.add(new_dev);
+		employee = new Developer;
 	    }
-	    else if (role == 2) {
-		SalesManager* new_sm = new SalesManager;
-		std::cin >> *new_sm;
-		employees_array.add(new_sm);
+	    if (role == 2) {
+		employee = new SalesManager;
 	    }
+	    std::cin >> *employee;
+	    employees_array.add(employee);
 	}
 	else if (command == "save") {
 	    std::string file_name;
