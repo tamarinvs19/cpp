@@ -1,5 +1,5 @@
-#include "../include/employees.h"
-#include "../include/bin_manip.h"
+#include "employees.h"
+#include "bin_manip.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>

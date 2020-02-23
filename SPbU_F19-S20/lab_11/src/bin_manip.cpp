@@ -1,4 +1,4 @@
-#include "../include/bin_manip.h"
+#include "bin_manip.h"
 #include <cassert>
 #include <climits>
 #include <cstring>
