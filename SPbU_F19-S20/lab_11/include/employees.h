@@ -1,6 +1,7 @@
 #ifndef LAB11_EMPLOYEES_H_INCLUDED
 #define LAB11_EMPLOYEES_H_INCLUDED
 
+#pragma once
 #include "bin_manip.h"
 #include <stdint.h>
 #include <ostream>
@@ -28,12 +29,13 @@ class Employee {
 	    std::string res_str = ss.str();
 	    return res_str;
 	};
-	virtual std::ofstream& get_bin_info(std::ofstream& os)  {};
+	virtual std::ofstream& get_bin_info(std::ofstream& os)=0;
 	friend std::ostream& operator<<(std::ostream&, Employee&);
 	friend std::istream& operator>>(std::istream&, Employee&);
 	friend std::ofstream& operator>>(std::ofstream&, Employee&);
 	friend std::ifstream& operator>>(std::ifstream&, Employee&);
     protected:
+	int32_t MAX_LEN = 100;
 	std::string _name;
 	int32_t _base_salary;
 };

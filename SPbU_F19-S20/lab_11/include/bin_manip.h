@@ -1,6 +1,7 @@
 #ifndef LAB11_BIN_MANIP_H_INCLUDED
 #define LAB11_BIN_MANIP_H_INCLUDED
 
+#pragma once
 #include <iostream>
 #include <cstdint>
 #include <cstddef>
@@ -43,6 +44,7 @@ private:
 struct read_c_str {
     read_c_str(char* _data, std::size_t _size) : data(_data), size(_size) {}
     friend std::ifstream& operator>>(std::ifstream&, const read_c_str&);
+    char * get_data() {return data;}
 private:
     char* data;
     std::size_t size;

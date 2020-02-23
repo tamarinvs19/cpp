@@ -44,7 +44,6 @@ std::ofstream& operator<<(std::ofstream& os, const write_c_str& d) {
 }
 
 std::ifstream& operator>>(std::ifstream& is, const read_c_str& d) {
-    std::cout << "----";
     for (std::size_t i = 0;; i++) {
 	assert(i < d.size);
 	char c = is.get();

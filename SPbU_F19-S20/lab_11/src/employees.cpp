@@ -1,32 +1,9 @@
 #include "../include/employees.h"
-#include "bin_manip.cpp"
+#include "../include/bin_manip.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
 
-// std::ostream& operator<<(std::ostream& os, Employee& employee) {
-//     os << employee.get_info();
-//     return os;
-// }
-//
-// std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
-//     os << employee.get_bin_info();
-//     return os;
-// }
-//
-// std::istream& operator>>(std::istream& is, Employee& employee) {
-//     is >> employee._name >> employee._base_salary;
-//     return is;
-// }
-//
-// std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
-//     char * name;
-//     is >> read_c_str(name, std::strlen(name)) >> read_le_int32(employee._base_salary);
-//     std::string sname(name);
-//     employee._name = sname;
-//     return is;
-// }
-//
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
     os << developer.get_info();
     return os;
@@ -47,13 +24,11 @@ std::istream& operator>>(std::istream& is, Developer& developer) {
 }
 
 std::ifstream& operator>>(std::ifstream& is, Developer& developer) {
-    char * name;
-    // int32_t i;
-    // is >> read_le_int32(i);
-    is >> read_c_str(name, std::strlen(name)) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
-    std::cout << "123" << std::endl;
+    char *name = (char *)std::malloc(sizeof(char) * (developer.MAX_LEN + 1));
+    is >> read_c_str(name, sizeof(name)) >> read_le_int32(developer._base_salary) >> read_bool(developer._has_bonus);
     std::string sname(name);
     developer._name = sname;
+    delete [] name;
     return is;
 }
 
@@ -76,16 +51,17 @@ std::istream& operator>>(std::istream& is, SalesManager& sales_manager) {
 }
 
 std::ifstream& operator>>(std::ifstream& is, SalesManager& sales_manager) {
-    char * name;
-    is >> read_c_str(name, std::strlen(name)) >> read_le_int32(sales_manager._base_salary) >> read_le_int32(sales_manager._sold_nm) >> read_le_int32(sales_manager._price);
+    char *name = (char *)std::malloc(sizeof(char) * (sales_manager.MAX_LEN + 1));
+    is >> read_c_str(name, sizeof(name)) >> read_le_int32(sales_manager._base_salary) >> read_le_int32(sales_manager._sold_nm) >> read_le_int32(sales_manager._price);
     std::string sname(name);
     sales_manager._name = sname;
+    delete [] name;
     return is;
 }
 
 std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
     std::vector <Employee*> emps = employees_array.get_employees();
-    for (int i=0; i<emps.size(); i++) {
+    for (int32_t i=0; i<(int32_t)emps.size(); i++) {
 	os << i + 1 << ". " << emps[i]->get_info();
     }
     os << "== Total salary: " << employees_array.total_salary() << "\n\n";
@@ -94,7 +70,7 @@ std::ostream& operator<<(std::ostream& os, EmployeesArray& employees_array) {
 std::ofstream& operator<<(std::ofstream& os, EmployeesArray& employees_array) {
     std::vector <Employee*> emps = employees_array.get_employees();
     os << write_le_int32(emps.size());
-    for (int i=0; i<emps.size(); i++) {
+    for (int32_t i=0; i<(int32_t)emps.size(); i++) {
 	emps[i]->get_bin_info(os);
     }
     return os;
@@ -102,14 +78,12 @@ std::ofstream& operator<<(std::ofstream& os, EmployeesArray& employees_array) {
 std::ifstream& operator>>(std::ifstream& is, EmployeesArray& employees_array) {
     int32_t cnt;
     is >> read_le_int32(cnt);
-    std::cout << cnt << std::endl;
     for (int i=0; i<cnt; i++) {
 	int32_t role;
 	is >> read_le_int32(role);
 	if (role == 1) {
 	    Developer* new_dev = new Developer; 
 	    is >> *new_dev;
-	    // std::cout << role << std::endl;
 	    employees_array.add(new_dev);
 	}
 	else if (role == 2) {
