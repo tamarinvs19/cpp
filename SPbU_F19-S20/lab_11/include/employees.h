@@ -34,10 +34,7 @@ class Employee {
 	friend std::istream& operator>>(std::istream&, Employee&);
 	friend std::ofstream& operator>>(std::ofstream&, Employee&);
 	friend std::ifstream& operator>>(std::ifstream&, Employee&);
-	Employee() {
-	    _name = "";
-	    _base_salary = 0;
-	}
+	Employee() {}
     protected:
 	int32_t MAX_LEN = 100;
 	std::string _name;

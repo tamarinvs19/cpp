@@ -13,15 +13,16 @@ int main() {
 	else if (command == "add") {
 	    int role;
 	    std::cin >> role;
-	    Employee* employee = (Employee *)malloc(sizeof(Employee));
 	    if (role == 1) {
-		employee = new Developer;
+		Developer* new_dev = new Developer; 
+		std::cin >> *new_dev;
+		employees_array.add(new_dev);
 	    }
-	    if (role == 2) {
-		employee = new SalesManager;
+	    else if (role == 2) {
+		SalesManager* new_sm = new SalesManager;
+		std::cin >> *new_sm;
+		employees_array.add(new_sm);
 	    }
-	    std::cin >> *employee;
-	    employees_array.add(employee);
 	}
 	else if (command == "save") {
 	    std::string file_name;

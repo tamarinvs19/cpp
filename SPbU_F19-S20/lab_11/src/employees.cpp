@@ -4,6 +4,29 @@
 #include <fstream>
 #include <iostream>
 
+std::ostream& operator<<(std::ostream& os, Employee& employee) {
+    os << employee.get_info();
+    return os;
+}
+
+std::ofstream& operator<<(std::ofstream& os, Employee& employee) {
+    employee.get_bin_info(os);
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Employee& employee) {
+    is >> employee._name >> employee._base_salary;
+    return is;
+}
+
+std::ifstream& operator>>(std::ifstream& is, Employee& employee) {
+    char * name = new char[employee._name.size() + 1];
+    is >> read_c_str(name, sizeof(name)) >> read_le_int32(employee._base_salary);
+    std::string sname(name);
+    employee._name = sname;
+    return is;
+}
+
 std::ostream& operator<<(std::ostream& os, Developer& developer) {
     os << developer.get_info();
     return os;
