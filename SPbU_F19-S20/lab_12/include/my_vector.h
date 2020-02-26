@@ -28,6 +28,7 @@ public:
     void clear();
 
 private:
+    size_t i;
     size_t capacity_;
     size_t size_;
     T* array_;
