@@ -75,10 +75,10 @@ std::size_t my_vector<T>::reserve(std::size_t n) {
 reference operator [](size_t j) { 
     return array_[j];
 }
-//
-// const_reference operator [](size_t j) const { 
-//     return array_[j]; 
-// }
+
+const_reference operator [](size_t j) const { 
+    return array_[j]; 
+}
 
 void my_vector<T>::push_back(T t) {
     resize(size_ + 1);
