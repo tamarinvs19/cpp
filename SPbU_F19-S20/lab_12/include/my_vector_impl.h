@@ -28,11 +28,13 @@ my_vector<T>::my_vector(std::size_t n) {
 }
 
 my_vector<T>::~my_vector() {
-    // while (_size > 0) 
-	// alloc.destroy(--_size);
 }
 
 my_vector<T>::my_vector operator=(my_vector other) {
+    this.resize(other.size());
+    for (int i = 0; i < other.size(); i++) {
+	this.array_[i] = other.array_[i];
+    }
 }
 
 std::size_t my_vector<T>::size() {
@@ -49,12 +51,25 @@ bool my_vector<T>::empty() {
 
 std::size_t my_vector<T>::resize(std::size_t n) {
     if (n > capacity_) {
-	capacity(n);
+	reserve(n);
     }
-    
+    for (int i = size_; i<n; i++) {
+	array_[i] = T();
+    }
+    size_ = n;
 }
 
-std::size_t my_vector<T>::capacity(std::size_t n) {
+std::size_t my_vector<T>::reserve(std::size_t n) {
+    if (n > capacity_) {
+	capacity_ = get_min_capacity(n);
+	uint8_t * buf = new uint8_t [capacity_ * size_of(T)];
+	new_array_ = (T*) buf;
+	for (int i = 0; i < n; i++) {
+	    new_array_[i] = array_[i];
+	}
+	size_ = n;
+	array_ = new_array_;
+    }
 }
 
 reference operator [](size_t j) { 
