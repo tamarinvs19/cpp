@@ -21,14 +21,15 @@ public:
     void resize(std::size_t n);
     void reserve(std::size_t n);
 
-    ?? operator[](std::size_t index);
+    reference operator[](std::size_t index);
 
     void push_back(T t);
     void pop_back();
     void clear();
 
+    friend std::ostream& operator<<(std::ostream&, my_vector<T>&);
+
 private:
-    size_t i;
     size_t capacity_;
     size_t size_;
     T* array_;
