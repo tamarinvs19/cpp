@@ -2,6 +2,7 @@
 #define MY_VECTOR_H_
 
 #include <cstddef>
+#include <iostream>
 
 namespace my_vector {
 
@@ -10,8 +11,8 @@ class my_vector {
 public:
     my_vector();
     my_vector(std::size_t n);
-    my_vector(my_vector other);
-    my_vector operator=(my_vector other);
+    my_vector(my_vector<T>& other);
+    my_vector<T>& operator=(my_vector<T>&);
     ~my_vector();
 
     std::size_t size();
@@ -21,13 +22,14 @@ public:
     void resize(std::size_t n);
     void reserve(std::size_t n);
 
-    reference operator[](std::size_t index);
+    T& operator[](std::size_t index);
+    const T& operator[](std::size_t index) const;
 
     void push_back(T t);
     void pop_back();
     void clear();
 
-    friend std::ostream& operator<<(std::ostream&, my_vector<T>&);
+    std::ostream& operator<<(std::ostream&, my_vector<T>&);
 
 private:
     size_t capacity_;
