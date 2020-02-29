@@ -3,6 +3,8 @@
 
 #include <memory>
 
+namespace my_vector {
+
 int get_min_capacity(int n) {
     int ln = 0;
     while ((1 << ln) < n)
@@ -20,12 +22,13 @@ template <typename T>
 my_vector<T>::my_vector(std::size_t n) {
     capacity_ = get_min_capacity(n);
     size_ = n;
-    array_ = (T*) new uint8_t [capacity_ * size_of(T)];
-    for (int i = 0; i < capacity_; i++) {
-	new array_+i T();
+    array_ = (T*) new uint8_t [capacity_ * sizeof(T)];
+    for (int i = 0; i < size_; i++) {
+	new (array_+i) T();
     }
 }
 
+template <typename T>
 my_vector<T>::~my_vector() {
     for (int i = 0; i < capacity_; i++) {
 	array_[i].~T();
@@ -35,77 +38,92 @@ my_vector<T>::~my_vector() {
     delete capacity_;
 }
 
-my_vector<T>::my_vector& operator=(my_vector& other) {
-    this.resize(other.size());
-    for (int i = 0; i < other.size(); i++) {
-	this.array_[i] = other.array_[i];
-    }
-}
-
-std::size_t my_vector<T>::size() {
+template <typename T>
+std::size_t my_vector<T>::size() const {
     return size_;
 }
 
-std::size_t my_vector<T>::capacity() {
+template <typename T>
+std::size_t my_vector<T>::capacity() const {
     return capacity_;
 }
 
-bool my_vector<T>::empty() {
+template <typename T>
+bool my_vector<T>::empty() const {
     return size_ == 0;
 }
 
-std::size_t my_vector<T>::resize(std::size_t n) {
+template <typename T>
+void my_vector<T>::resize(std::size_t n) {
     if (n > capacity_) {
 	reserve(n);
     }
-    for (int i = size_; i<n; i++) {
-	array_[i] = T();
+    for (std::size_t i = size_; i<n; i++) {
+	new (array_+i) T();
     }
     size_ = n;
 }
 
-std::size_t my_vector<T>::reserve(std::size_t n) {
-    if (n > capacity_) {
-	capacity_ = get_min_capacity(n);
-	array_ = (T*) new uint8_t [capacity_ * size_of(T)];
-	for (int i = 0; i < capacity_; i++) {
-	    new array_+i T();
-	}
-	size_ = n;
-	array_ = new_array_;
+template <typename T>
+void my_vector<T>::reserve(std::size_t n) {
+    if (capacity_ >= n) {
+	return ;
     }
+    capacity_ = get_min_capacity(n);
+    T* new_array_ = (T*) new uint8_t [capacity_ * sizeof(T)];
+    for (std::size_t i = 0; i < size_; i++) {
+	new (new_array_+i) T();
+	new_array_[i] = array_[i];
+    }
+    array_ = new_array_;
 }
 
-T operator [](size_t j) { 
-    return array_[j];
+template <typename T>
+T& my_vector<T>::operator [](size_t j) { 
+    return *array_[j];
 }
 
-const T operator [](size_t j) const { 
-    return array_[j]; 
+template <typename T>
+const T& my_vector<T>::operator [](size_t j) const { 
+    return *array_[j];
 }
 
+template <typename T>
 void my_vector<T>::push_back(T t) {
     resize(size_ + 1);
     array_[size_] = new (array_ + size_) T(t);
 }
 
+template <typename T>
 void my_vector<T>::pop_back() {
     if (empty())
 	return ;
     array_[--size_].~T();
 }
 
+template <typename T>
 void my_vector<T>::clear() {
     while (size_ > 0) {
 	pop_back();
     }
 }
 
-std::ostream& operator<<(std::ostream& os, my_vector<T>& vec) {
-    for (int i = 0; i < my_vector.size(); i++) {
-	os << my_vector.array_[i] << " ";
+template <typename T>
+my_vector<T>& my_vector<T>::operator=(my_vector<T>& other) {
+    resize(other->size());
+    for (size_t i = 0; i < other->size(); i++) {
+	array_[i] = other->array_[i];
+    }
+    return *this;
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const my_vector<T>& vec) {
+    for (size_t i = 0; i < vec->size(); i++) {
+	os << vec->array_[i] << " ";
     }
     return os;
 }
 
+}
 #endif  // MY_VECTOR_IMPL_H_

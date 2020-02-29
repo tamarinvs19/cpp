@@ -15,9 +15,9 @@ public:
     my_vector<T>& operator=(my_vector<T>&);
     ~my_vector();
 
-    std::size_t size();
-    std::size_t capacity();
-    bool empty();
+    std::size_t size() const;
+    std::size_t capacity() const;
+    bool empty() const;
 
     void resize(std::size_t n);
     void reserve(std::size_t n);
@@ -29,13 +29,14 @@ public:
     void pop_back();
     void clear();
 
-    std::ostream& operator<<(std::ostream&, my_vector<T>&);
-
 private:
     size_t capacity_;
     size_t size_;
     T* array_;
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream&, const my_vector<T>&);
 
 }
 

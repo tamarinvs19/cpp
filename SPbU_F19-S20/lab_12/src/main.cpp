@@ -7,7 +7,7 @@ namespace product {
 class Product {
 public:
     Product(const char* name, int quantity, double price);
-    friend std::ostream& operator<<(std::ostream&, Product&) p;
+    friend std::ostream& operator<<(std::ostream&, Product&);
 
 private:
     char *name_;  // Указатель владеет C-style строкой, на которую указывает.
@@ -17,6 +17,7 @@ private:
 
 std::ostream& operator<<(std::ostream& os, Product& p) {
     os << p.name_ << " " << p.quantity_ << " " << p.price_;
+    return os;
 }
 
 void print(const my_vector::my_vector<Product>& v) {
