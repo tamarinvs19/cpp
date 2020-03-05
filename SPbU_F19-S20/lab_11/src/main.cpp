@@ -1,9 +1,9 @@
-#include "../include/employees.h"
+#include "employees.h"
 #include <fstream>
 #include <iostream>
 
 int main() {
-    EmployeesArray employees_array;
+    EmployeesArray employees_array = *(new EmployeesArray());
     std::string command;
     while (command != "exit") {
 	std::cin >> command;
@@ -13,16 +13,15 @@ int main() {
 	else if (command == "add") {
 	    int role;
 	    std::cin >> role;
+	    Employee * emp;
 	    if (role == 1) {
-		Developer* new_dev = new Developer; 
-		std::cin >> *new_dev;
-		employees_array.add(new_dev);
+		emp = new Developer(); 
 	    }
-	    else if (role == 2) {
-		SalesManager* new_sm = new SalesManager;
-		std::cin >> *new_sm;
-		employees_array.add(new_sm);
+	    else {
+		emp = new SalesManager();
 	    }
+	    std::cin >> *emp;
+	    employees_array.add(emp);
 	}
 	else if (command == "save") {
 	    std::string file_name;

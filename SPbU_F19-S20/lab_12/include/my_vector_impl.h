@@ -79,16 +79,6 @@ void my_vector<T>::reserve(std::size_t n) {
 }
 
 template <typename T>
-T& my_vector<T>::operator [](size_t j) { 
-    return *array_[j];
-}
-
-template <typename T>
-const T& my_vector<T>::operator [](size_t j) const { 
-    return *array_[j];
-}
-
-template <typename T>
 void my_vector<T>::push_back(T t) {
     resize(size_ + 1);
     array_[size_] = new (array_ + size_) T(t);
@@ -109,18 +99,28 @@ void my_vector<T>::clear() {
 }
 
 template <typename T>
+reference my_vector<T>::operator [](size_t j) { 
+    return &array_[j];
+}
+
+template <typename T>
+const_reference my_vector<T>::operator [](size_t j) const { 
+    return &array_[j];
+}
+
+template <typename T>
 my_vector<T>& my_vector<T>::operator=(my_vector<T>& other) {
-    resize(other->size());
-    for (size_t i = 0; i < other->size(); i++) {
-	array_[i] = other->array_[i];
+    resize(other.size());
+    for (size_t i = 0; i < other.size(); i++) {
+	array_[i] = other.array_[i];
     }
     return *this;
 }
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const my_vector<T>& vec) {
-    for (size_t i = 0; i < vec->size(); i++) {
-	os << vec->array_[i] << " ";
+    for (size_t i = 0; i < vec.size(); i++) {
+	os << vec[i] << " ";
     }
     return os;
 }

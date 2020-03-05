@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -Werror -std=c++17 -Iinclude
+CXXFLAGS = -O0 -Wall -Werror -std=c++17 -Iinclude
 LDFLAGS = 
 
 EXE = lab_11
