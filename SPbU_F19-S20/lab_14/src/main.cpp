@@ -11,7 +11,15 @@ void interface() {
 	if (command == "load") {
 	    std::string file_name;
 	    std::cin >> dollar >> num >> file_name;
-	    regs[num].load(file_name);
+	    try {
+		regs[num].load(file_name);
+	    }
+	    catch (matrix_exception::LoadOpenException e) {
+		std::cout << e.what() << std::endl;
+	    }
+	    catch (matrix_exception::LoadFormatException e) {
+		std::cout << e.what() << std::endl;
+	    }
 	}
 	if (command == "print") {
 	    std::cin >> dollar >> num;
@@ -19,15 +27,30 @@ void interface() {
 	}
 	if (command == "add") {
 	    std::cin >> dollar >> num >> dollar >> num2;
-	    regs[num].add(regs[num2]);
+	    try {
+		regs[num].add(regs[num2]);
+	    }
+	    catch (matrix_exception::AddException e) {
+		std::cout << e.what() << std::endl;
+	    }
 	}
 	if (command == "mul") {
 	    std::cin >> dollar >> num >> dollar >> num2;
-	    regs[num].mul(regs[num2]);
+	    try {
+		regs[num].mul(regs[num2]);
+	    }
+	    catch (matrix_exception::MulException e) {
+		std::cout << e.what() << std::endl;
+	    }
 	}
 	if (command == "elem") {
-	    std::cin >> dollar >> num >> nr >> nc;
-	    std::cout << regs[num].elem(nr, nc) << std::endl;
+	    try {
+		std::cin >> dollar >> num >> nr >> nc;
+		std::cout << regs[num].elem(nr, nc) << std::endl;
+	    }
+	    catch (matrix_exception::ElemException e) {
+		std::cout << e.what() << std::endl;
+	    }
 	}
     }
 }

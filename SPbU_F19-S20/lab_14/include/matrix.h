@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cstddef>
-#include <exception>
 #include <vector>
 #include <string>
 
@@ -18,7 +17,7 @@ class Matrix {
 
 	void add(Matrix&);
 	void mul(Matrix&);
-	int elem(size_t, size_t);
+	int elem(int, int);
 
 	size_t rows();
 	size_t columns();
@@ -27,6 +26,7 @@ class Matrix {
 	std::vector<std::vector<int> > elements_;
 };
 } // matrix
+
 
 #include "matrix_impl.h"
 
