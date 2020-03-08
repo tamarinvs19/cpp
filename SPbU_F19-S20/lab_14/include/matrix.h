@@ -16,7 +16,7 @@ class Matrix {
 	void load(std::string file_name);
 	friend std::ostream& operator<<(std::ostream&, Matrix&);
 
-	void sum(Matrix&);
+	void add(Matrix&);
 	void mul(Matrix&);
 	int elem(size_t, size_t);
 

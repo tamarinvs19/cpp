@@ -26,7 +26,7 @@ namespace matrix {
 	return columns_;
     }
 
-    void Matrix::sum(Matrix& other) {
+    void Matrix::add(Matrix& other) {
 	std::vector< std::vector<int> > sum(rows_, std::vector<int>(columns_, 0));
 	for (size_t i=0; i<this->rows(); i++)
 	    for (size_t j=0; j<this->columns(); j++)
