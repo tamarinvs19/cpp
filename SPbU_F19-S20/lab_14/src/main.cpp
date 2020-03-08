@@ -1,12 +1,15 @@
 #include <iostream>
 #include "matrix.h"
 
+#include <exception>
+
 void interface() {
     std::vector<matrix::Matrix> regs(10, matrix::Matrix());
     std::string command = "";
     size_t num, num2, nr, nc;
     char dollar;
     while (command != "exit") {
+	try {
 	std::cin >> command;
 	if (command == "load") {
 	    std::string file_name;
@@ -51,6 +54,10 @@ void interface() {
 	    catch (matrix_exception::ElemException e) {
 		std::cout << e.what() << std::endl;
 	    }
+	}
+	}
+	catch (std::bad_alloc e) {
+	    std::cout << "Unable to allocate memory" << std::endl;
 	}
     }
 }
