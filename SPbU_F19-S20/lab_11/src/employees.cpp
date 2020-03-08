@@ -49,13 +49,12 @@ Developer::Developer (char * name, int32_t base_salary, bool has_bonus) {
 Developer::Developer () {
     _name = new char[MAX_LEN];
 }
-Developer::~Developer () {
-    std::cout << this;
+// Developer::~Developer () {
     // delete &MAX_LEN;
     // delete &_name;
     // delete &_base_salary;
     // delete &_has_bonus;
-}
+// }
 
 int Developer::salary() const {
     int salary = _base_salary;
@@ -175,13 +174,13 @@ EmployeesArray::EmployeesArray (std::vector<Employee*> employees) {
 EmployeesArray::EmployeesArray () {
     std::vector<Employee*> _employees;
 }
-EmployeesArray::~EmployeesArray () {
+// EmployeesArray::~EmployeesArray () {
     // delete &_employees;
     // for (auto e: _employees) {
 	// std::cout << *e;
 	// delete &e;
     // }
-}
+// }
 
 void EmployeesArray::add(Employee* e) {
     _employees.push_back(e);

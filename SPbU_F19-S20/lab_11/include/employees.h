@@ -43,7 +43,7 @@ class Developer: public Employee {
 
 	Developer (char * name, int32_t base_salary, bool has_bonus);
 	Developer ();
-	~Developer ();
+	// ~Developer ();
     private:
 	bool _has_bonus;
 };
@@ -80,7 +80,7 @@ class EmployeesArray {
 	friend std::ifstream& operator>>(std::ifstream&, EmployeesArray&);
 	EmployeesArray(std::vector<Employee*> employees);
 	EmployeesArray();
-	~EmployeesArray();
+	// ~EmployeesArray();
     private:
 	std::vector <Employee*> _employees;
 };
