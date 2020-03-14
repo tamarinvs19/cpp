@@ -22,10 +22,10 @@ template<typename T, std::size_t N>
 void test_assign() {
   my_array<T, N> a;
   const my_array<T, N> &ca = a;
-  a.fill(T());
+  // a.fill(T());
 
-  a[0] = T();
-  a[0] = a[0];
+  // a[0] = T();
+  // a[0] = a[0];
   a[0] = ca[0];
 }
 
