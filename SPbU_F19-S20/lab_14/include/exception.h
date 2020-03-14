@@ -1,8 +1,6 @@
 #ifndef EXTENTION_H_
 #define EXTENTION_H_
 
-#include <exception>
-
 namespace matrix_exception {
 class MatrixException {
     public:
