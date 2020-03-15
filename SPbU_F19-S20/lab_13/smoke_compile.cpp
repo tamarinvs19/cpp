@@ -24,8 +24,8 @@ void test_assign() {
   const my_array<T, N> &ca = a;
   a.fill(T());
 
-  // a[0] = T();
-  // a[0] = a[0];
+  a[0] = T();
+  a[0] = a[0];
   a[0] = ca[0];
 }
 
