@@ -36,12 +36,14 @@ class my_array<bool, N> {
 	    return proxy(array_[index / 8], 1 << index % 8);
 	}
 	bool at(std::size_t index) const {
+	    assert(N > index);
 	    return (bool)proxy(array_[index / 8], 1 << index % 8);
 	}
 
 	proxy operator[](std::size_t index) {
 	    std::cout << index << std::endl;
 	    std::cout << sizeof(array_) << std::endl;
+	    std::cout << (1 << index % 8) << std::endl;
 	    return proxy(array_[index / 8], 1 << index % 8);
 	}
 	bool operator[](std::size_t index) const {
@@ -57,13 +59,15 @@ class my_array<bool, N> {
 
 	void fill(bool val);
     private:
-	uint8_t* array_;
+	uint8_t array_ [N / 8 + (1 ? N % 8 != 0 : 0)];
 };
 
 template<std::size_t N>
 class my_array<bool, N>::proxy {
     public:
-	proxy(uint8_t& data, uint8_t msk) : data_(data), msk_(msk) {};
+	proxy(uint8_t& data, uint8_t msk) : data_(data), msk_(msk) {
+	    std::cout << data << " &&& " << msk << std::endl;
+	};
 	operator bool() const {
 	    return (bool)data_ & msk_;
 	}

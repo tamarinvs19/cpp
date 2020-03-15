@@ -22,7 +22,7 @@ template<typename T, std::size_t N>
 void test_assign() {
   my_array<T, N> a;
   const my_array<T, N> &ca = a;
-  // a.fill(T());
+  a.fill(T());
 
   // a[0] = T();
   // a[0] = a[0];
@@ -38,10 +38,10 @@ class NonCopyable {
 };
 
 int main() {
-  test_core<int, 10>();
-  test_core<bool, 10>();
-  test_core<NonCopyable, 10>();
-
-  test_assign<int, 10>();
+  // test_core<int, 10>();
+  // test_core<bool, 10>();
+  // test_core<NonCopyable, 10>();
+  //
+  // test_assign<int, 10>();
   test_assign<bool, 10>();
 }
