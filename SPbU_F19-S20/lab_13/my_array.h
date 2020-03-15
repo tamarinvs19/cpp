@@ -59,7 +59,7 @@ class my_array<bool, N> {
 
 	void fill(bool val);
     private:
-	uint8_t array_ [N / 8 + (1 ? N % 8 != 0 : 0)];
+	uint8_t array_[N / 8 + (1 ? N % 8 != 0 : 0)];
 };
 
 template<std::size_t N>
