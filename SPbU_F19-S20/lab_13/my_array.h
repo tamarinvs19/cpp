@@ -36,20 +36,17 @@ class my_array<bool, N> {
 	    return proxy(array_[index / 8], 1 << index % 8);
 	}
 	bool at(std::size_t index) const {
-	    return (bool)proxy(array_[index / 8], 1 << index % 8);
+	    return array_[index / 8] & (1 << (index % 8));
 	}
 
 	proxy operator[](std::size_t index) {
-	    std::cout << index << std::endl;
-	    std::cout << sizeof(array_) << std::endl;
+	    std::cout << "proxy1" << std::endl;
+	    std::cout << array_[0] << std::endl;
 	    return proxy(array_[index / 8], 1 << index % 8);
 	}
 	bool operator[](std::size_t index) const {
-	    std::cout << "+++" << std::endl;
-	    std::cout << index/8 << std::endl;
-	    std::cout << sizeof(array_) << std::endl;
-	    std::cout << "---" << std::endl;
-	    return (bool)proxy(array_[index / 8], 1 << (index % 8));
+	    std::cout << "proxy2" << std::endl;
+	    return array_[index / 8] & (1 << (index % 8));
 	}
 
 	bool empty() const ;
@@ -57,20 +54,22 @@ class my_array<bool, N> {
 
 	void fill(bool val);
     private:
-	uint8_t* array_;
+	uint8_t *array_;
 };
 
 template<std::size_t N>
 class my_array<bool, N>::proxy {
     public:
-	proxy(uint8_t& data, uint8_t msk) : data_(data), msk_(msk) {};
+	proxy(uint8_t& data, uint8_t msk) : data_(data), msk_(msk) {
+	    std::cout << data << ",,," << msk << std::endl;
+	};
 	operator bool() const {
 	    return (bool)data_ & msk_;
 	}
 
 	proxy& operator = (bool b) {
-	    std::cout << "proxy" << std::endl;
-	    std::cout << b << std::endl;
+	    std::cout << data_ << std::endl;
+	    std::cout << msk_ << std::endl;
 	    if (b)
 		data_ |= msk_;
 	    else
