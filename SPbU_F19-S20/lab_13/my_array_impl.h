@@ -53,12 +53,17 @@ std::size_t my_array<T, N>::size() const  {
 
 template<std::size_t N>
 my_array<bool, N>::my_array() {
-    array_ = new uint8_t[N / 8 + 1 ? N % 8 != 0 : 0];
+    // std::cout << (N / 8 + (1 ? N % 8 != 0 : 0)) << std::endl;
+    // // array_ = new uint8_t[N / 8 + (1 ? N % 8 != 0 : 0)];
+    // // std::cout << sizeof(a) << std::endl;
+    // // array_ = a;
+    // std::cout << sizeof(array_) << std::endl;
+    // std::cout << sizeof(this->array_) << std::endl;
 }
 
 template<std::size_t N>
 my_array<bool, N>::~my_array() {
-    delete [] array_;
+    // delete [] array_;
 }
 
 template<std::size_t N>
