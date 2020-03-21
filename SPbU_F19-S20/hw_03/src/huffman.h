@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <utility>
 #include <string>
+#include <bitset>
+#include <climits>
 
 class TreeNode {
     private:
@@ -40,7 +42,7 @@ class HuffTree {
 
 	TreeNode* join_nodes(TreeNode* left_node, TreeNode* right_node);
 	void build();
-	std::string get_val_by_code(int code);
+	TreeNode* get_root();
 };
 
 class HuffmanArchiver {
