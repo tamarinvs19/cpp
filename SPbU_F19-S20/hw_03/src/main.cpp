@@ -13,8 +13,9 @@ int main()
     // };
     // HuffTree ht = HuffTree(v);
     // ht.build();
-    HuffmanArchiver ha = HuffmanArchiver("t1", "out");
-    ha.build_tree();
+    HuffmanArchiver ha = HuffmanArchiver("t1", "test_t1");
+    ha.archivate();
+    ha.unarchivate();
     
     return 0;
 }

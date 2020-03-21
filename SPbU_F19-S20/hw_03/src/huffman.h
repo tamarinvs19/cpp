@@ -20,7 +20,8 @@ class TreeNode {
 	int get_weight();
 	std::string get_value();
 	std::string get_code();
-	void get_childrens() {std::cout << left_children_->get_value() << " ; " << right_children_->get_value() << std::endl;}
+	TreeNode* get_left_children();
+	TreeNode* get_right_children();
 
 	void gen_relative_code(std::string code);
 };
@@ -28,17 +29,18 @@ class TreeNode {
 class HuffTree {
     private:
 	struct cmp {
-	    bool operator()(TreeNode a, TreeNode b) {
-		return a.get_weight() > b.get_weight();
+	    bool operator()(TreeNode* a, TreeNode* b) {
+		return a->get_weight() > b->get_weight();
 	    };
 	};
-	std::priority_queue<TreeNode, std::vector<TreeNode>, cmp> nodes_;
+	std::priority_queue<TreeNode*, std::vector<TreeNode*>, cmp> nodes_;
     public:
-	HuffTree(std::vector<TreeNode> nodes);
+	HuffTree(std::vector<TreeNode*> nodes);
 	~HuffTree();
 
-	TreeNode join_nodes(TreeNode left_node, TreeNode right_node);
+	TreeNode* join_nodes(TreeNode* left_node, TreeNode* right_node);
 	void build();
+	std::string get_val_by_code(int code);
 };
 
 class HuffmanArchiver {
@@ -47,19 +49,18 @@ class HuffmanArchiver {
 	std::string file_out_;
 	HuffTree* huff_tree_;
 	std::unordered_map<char, int> stat_table_;
-	std::unordered_map<char, std::string> code_table_;
+	std::unordered_map<std::string, std::string> code_table_;
     public:
 	HuffmanArchiver(std::string file_in, std::string file_out);
 	~HuffmanArchiver();
 
-	// void archivate();
-	// void unarchivate();
+	void archivate();
+	void unarchivate();
 	void build_tree();
 
 	// void load_code_table();
-	// void save_code_table();
+	void save_code_table(std::ofstream& fout);
 
 	void calculate_statistic();
-	void generate_code_table();
 };
 
