@@ -113,8 +113,8 @@ void HuffmanArchiver::build_tree() {
 }
 
 void write_to_file(std::ofstream& fout, int32_t c) {
-    for (std::size_t j=0; j<sizeof(c); ++j) {
-	char chunk = (c >> (j * CHAR_BIT)) & 0xFF;
+    for (std::size_t j=sizeof(c); j>0; --j) {
+	char chunk = (c >> ((int)(j-1) * CHAR_BIT)) & 0xFF;
 	fout.write(&chunk, sizeof(char));
     }
 }
@@ -133,12 +133,10 @@ void HuffmanArchiver::archivate() {
 	fin.get(symbol);
 	std::string s(1, symbol);
 	if (code_table_.find(s) != code_table_.end()) {
-	    std::cout << code_table_[s];
 	for (auto i: code_table_[s]) {
 	    cnt++;
 	    c = c << 1 | (i == '1' ? 1: 0);
 	    if (cnt == 32) {
-		// std::cout << "\n" << std::bitset<sizeof(c) * CHAR_BIT>(c) << std::endl;
 		write_to_file(fout, c);
 		c = 0; cnt = 0;
 	    }
@@ -147,7 +145,6 @@ void HuffmanArchiver::archivate() {
     }
     if (cnt != 0) { 
 	c <<= (32 - cnt);
-		// std::cout << "\n" << std::bitset<sizeof(c) * CHAR_BIT>(c) << std::endl;
 	write_to_file(fout, c);
     }
     fin.close();
@@ -155,23 +152,21 @@ void HuffmanArchiver::archivate() {
 }
 
 void HuffmanArchiver::unarchivate() {
-    std::ifstream fin("test_t1", std::ios::binary);
-    std::ofstream fout("out_t1");
+    std::ifstream fin(file_in_, std::ios::binary);
+    std::ofstream fout(file_out_);
     char symbol;
     TreeNode* root = huff_tree_->get_root();
-    std::cout << root->get_value() << std::endl;
     while (!fin.eof()) {
 	symbol = fin.get();
-	for (int i=0; i<8; ++i) {
-	    if (root->get_weight() == 0) {
+	for (int i=7; i>=0; --i) {
+	    if (root->get_value().length() == 1) {
 		fout << root->get_value();
 		root = huff_tree_->get_root();
 	    }
-	    std::cout << (bool)(symbol & 1 << i);
-	    // if (symbol & 1 << i)
-		// root = root->get_right_children();
-	    // else
-		// root = root->get_left_children();
+	    if (symbol & 1 << i)
+		root = root->get_right_children();
+	    else
+		root = root->get_left_children();
 	}
     }
     fin.close();
