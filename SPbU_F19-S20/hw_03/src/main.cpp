@@ -21,7 +21,6 @@ void interface(int argc, std::vector<std::string> argv) {
 	throw MyExceptions("Error!\nUsage: ./hw_3 [-c / -u] [-f / --file <file_name>] [-o / --output <file_name>]");
     }
     for (int i=0; i<argc; i++) {
-	std::cout << argv[i] << std::endl;
 	if (cmds.find(argv[i]) == cmds.end())
 	    throw MyExceptions("Error! Invalid key");
 	if (argv[i] == "-c")

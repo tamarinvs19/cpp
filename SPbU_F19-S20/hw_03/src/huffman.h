@@ -22,6 +22,9 @@ class TreeNode {
 	std::string get_code();
 	TreeNode* get_left_children();
 	TreeNode* get_right_children();
+	void set_left_children();
+	void set_right_children();
+	void set_value(std::string val);
 
 	void gen_relative_code(std::string code);
 };
@@ -40,6 +43,7 @@ class HuffTree {
 
 	TreeNode* join_nodes(TreeNode* left_node, TreeNode* right_node);
 	void build();
+	void add_node_by_code(std::string c, std::string code);
 	TreeNode* get_root();
 };
 
@@ -58,7 +62,7 @@ class HuffmanArchiver {
 	void unarchivate();
 	void build_tree();
 
-	// void load_code_table();
+	void load_code_table(std::ifstream& fin);
 	void save_code_table(std::ofstream& fout);
 
 	void calculate_statistic();
