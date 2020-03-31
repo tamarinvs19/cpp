@@ -4,7 +4,7 @@ LDFLAGS =
 
 EXE = hw_03
 SRCDIR = src
-OBJDIR = bin
+OBJDIR = obj
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
 

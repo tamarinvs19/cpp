@@ -4,25 +4,30 @@
 #include <map>
 
 void huffman(std::map<std::string, std::string> params) {
+    HuffmanArchiver ha = HuffmanArchiver(params["file"], params["output"]);
     if (params["mode"] == "c") {
-	HuffmanArchiver ha = HuffmanArchiver(params["file"], params["output"]);
 	ha.archivate();
     }
     if (params["mode"] == "u") {
-	HuffmanArchiver ha = HuffmanArchiver(params["file"], params["output"]);
 	ha.unarchivate();
     }
+    std::tuple<int, int, int> info = ha.get_info();
+    std::cout <<
+	std::get<0>(info) << std::endl <<
+	std::get<1>(info) << std::endl <<
+	std::get<2>(info) << std::endl;
 }
 
 void interface(int argc, std::vector<std::string> argv) {
     std::map<std::string, std::string> cmds = {{"-c", ""}, {"-u", ""}, {"-f", ""}, {"--file", ""}, {"-o", ""}, {"--output", ""}};
     std::map<std::string, std::string> params = {{"mode", ""}, {"file", ""}, {"output", ""}};
     if (argc != 5) {
-	throw MyExceptions("Error!\nUsage: ./hw_3 [-c / -u] [-f / --file <file_name>] [-o / --output <file_name>]");
+	throw my_exception::MyException("Error!\nUsage: ./hw_3 [-c / -u] [-f / --file <file_name>] [-o / --output <file_name>]");
     }
+
     for (int i=0; i<argc; i++) {
 	if (cmds.find(argv[i]) == cmds.end())
-	    throw MyExceptions("Error! Invalid key");
+	    throw my_exception::MyException("Error! Invalid key");
 	if (argv[i] == "-c")
 	    params["mode"] = "c";
 	if (argv[i] == "-u")
@@ -33,7 +38,7 @@ void interface(int argc, std::vector<std::string> argv) {
 		i++;
 	    }
 	    else
-		throw MyExceptions("Error! Incorrect order of args.");
+		throw my_exception::MyException("Error! Incorrect order of args.");
 	}
 	if (argv[i] == "-o" || argv[i] == "--output") {
 	    params["output"] = argv[i+1];
@@ -53,7 +58,7 @@ int main(int argc, char* argv[])
     try {
 	interface(argc-1, argv_v);
     }
-    catch (MyExceptions e) {
+    catch (my_exception::MyException e) {
 	std::cout << e.what() << std::endl;
     }
 
