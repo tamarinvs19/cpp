@@ -63,10 +63,10 @@ int main(int argc, char* argv[])
     try {
 	interface(argc-1, argv_v);
     }
-    catch (my_exception::MyException e) {
+    catch (my_exception::MyException &e) {
 	std::cout << e.what() << std::endl;
     }
-    catch (std::bad_alloc e) {
+    catch (std::bad_alloc &e) {
 	std::cout << "Unable to allocate memory" << std::endl;
     }
 
