@@ -1,15 +1,21 @@
-#include "huffman.h"
 #include <numeric>
 #include <bitset>
 #include <climits>
 
+#include "huffman.h"
+#include "exceptions.h"
 
+namespace huffman_archiver {
 HuffmanArchiver::HuffmanArchiver(std::string file_in_name, std::string file_out_name) {
     file_in_ = std::ifstream(file_in_name, std::istream::binary);
+    if (!file_in_.is_open()) 
+	throw my_exception::MyException("Can not open input file!");
     file_out_ = std::ofstream(file_out_name, std::ostream::binary);
-    // if () {}
+    if (!file_out_.is_open()) 
+	throw my_exception::MyException("Can not open output file!");
+    
     stat_table_ = std::vector<int>(HuffmanArchiver::DICT_SIZE, 0); 
-    huff_tree_ = new HuffTree();
+    huff_tree_ = new huffman_tree::HuffTree();
 }
 
 HuffmanArchiver::~HuffmanArchiver() {
@@ -23,7 +29,8 @@ void HuffmanArchiver::calculate_statistic() {
     unsigned char symbol;
     while (!file_in_.eof()) {
 	file_in_.read((char*)&symbol, sizeof(char));
-	// add throw
+	if (!file_in_.good() && !file_in_.eof())
+	    throw my_exception::MyException("File reading error!");
 	stat_table_[(int)symbol]++;
     }
 }
@@ -31,12 +38,16 @@ void HuffmanArchiver::calculate_statistic() {
 void HuffmanArchiver::save_statistic() {
     for (int c: stat_table_) {
 	file_out_ << c << "\n";
+	if (!file_out_.good())
+	    throw my_exception::MyException("File writting error!");
     }
 }
 
 void HuffmanArchiver::read_statistic() {
-    for (size_t i = 0; i < 256; ++i) { // out 256
+    for (size_t i = 0; i < DICT_SIZE; ++i) {
 	file_in_ >> stat_table_[i];
+	if (!file_in_.good())
+	    throw my_exception::MyException("File reading error!");
     }
 }
 
@@ -53,30 +64,38 @@ void HuffmanArchiver::archivate() {
     unsigned int cnt = 0;
     while (!file_in_.eof()) {
 	symbol = file_in_.get();
+	if (!file_in_.good() && !file_in_.eof())
+	    throw my_exception::MyException("File reading error!");
 	for (char i: code_table[symbol]) {
 	    c = c | (i == '1' ? 1: 0) << (CHAR_BIT - 1 - cnt);
 	    cnt++;
 	    if (cnt == CHAR_BIT) {
 		file_out_.write((char*)&c, sizeof(char));
-		// throw 
+		if (!file_out_.good())
+		    throw my_exception::MyException("File writting error!");
 		c = 0; cnt = 0;
 	    }
 	}
     }
-    if (cnt != 0) 
-	file_out_ << c;
+    if (cnt != 0) {
+	file_out_.write((char*)&c, sizeof(char));
+	if (!file_out_.good())
+	    throw my_exception::MyException("File writting error!");
+    }
 }
 
 void HuffmanArchiver::unarchivate() {
     read_statistic();
     huff_tree_->build(stat_table_);
     huff_tree_->gen_relative_code(huff_tree_->get_root());
-    TreeNode* node = huff_tree_->get_root();
+    huffman_tree::TreeNode* node = huff_tree_->get_root();
 
     int count_symbols = std::accumulate(stat_table_.begin(), stat_table_.end(), 1);
     int cnt = 0;
     char symbol;
     symbol = file_in_.get(); symbol = file_in_.get();
+    if (!file_in_.good() && !file_in_.eof())
+	throw my_exception::MyException("File reading error!");
     while (!file_in_.eof() && count_symbols > 2) {
 	if (symbol & (1 << (CHAR_BIT - 1 - cnt)))
 	    node = node->right_children_;
@@ -93,6 +112,8 @@ void HuffmanArchiver::unarchivate() {
 	if (cnt == CHAR_BIT) {
 	    cnt = 0;
 	    symbol = file_in_.get();
+	    if (!file_in_.good() && !file_in_.eof())
+		throw my_exception::MyException("File reading error!");
 	}
     }
 }
@@ -102,6 +123,6 @@ std::tuple<int, int, int> HuffmanArchiver::get_info() {
     file_in_.seekg(0, std::ifstream::end);
     file_out_.clear();
     file_out_.seekp(0, std::iostream::end);
-    return std::make_tuple(file_in_.tellg(), file_out_.tellp(), DICT_SIZE * (sizeof(int) + sizeof(char)));
+    return std::make_tuple(file_in_.tellg(), file_out_.tellp(), DICT_SIZE * (2 * sizeof(char)));
 }
-
+}

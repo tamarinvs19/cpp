@@ -3,22 +3,27 @@
 #include <iostream>
 #include <map>
 
-void huffman(std::map<std::string, std::string> params) {
-    HuffmanArchiver ha = HuffmanArchiver(params["file"], params["output"]);
+static void huffman(std::map<std::string, std::string> params) {
+    huffman_archiver::HuffmanArchiver ha = huffman_archiver::HuffmanArchiver(params["file"], params["output"]);
     if (params["mode"] == "c") {
 	ha.archivate();
+	std::tuple<int, int, int> info = ha.get_info();
+	std::cout <<
+	    std::get<0>(info) << std::endl <<
+	    std::get<1>(info) - std::get<2>(info) << std::endl <<
+	    std::get<2>(info) << std::endl;
     }
     if (params["mode"] == "u") {
 	ha.unarchivate();
+	std::tuple<int, int, int> info = ha.get_info();
+	std::cout <<
+	    std::get<0>(info) - std::get<2>(info) << std::endl <<
+	    std::get<1>(info) << std::endl <<
+	    std::get<2>(info) << std::endl;
     }
-    std::tuple<int, int, int> info = ha.get_info();
-    std::cout <<
-	std::get<0>(info) << std::endl <<
-	std::get<1>(info) << std::endl <<
-	std::get<2>(info) << std::endl;
 }
 
-void interface(int argc, std::vector<std::string> argv) {
+static void interface(int argc, std::vector<std::string> argv) {
     std::map<std::string, std::string> cmds = {{"-c", ""}, {"-u", ""}, {"-f", ""}, {"--file", ""}, {"-o", ""}, {"--output", ""}};
     std::map<std::string, std::string> params = {{"mode", ""}, {"file", ""}, {"output", ""}};
     if (argc != 5) {
@@ -60,6 +65,9 @@ int main(int argc, char* argv[])
     }
     catch (my_exception::MyException e) {
 	std::cout << e.what() << std::endl;
+    }
+    catch (std::bad_alloc e) {
+	std::cout << "Unable to allocate memory" << std::endl;
     }
 
     return 0;

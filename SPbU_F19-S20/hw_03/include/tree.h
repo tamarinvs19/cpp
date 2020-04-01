@@ -1,22 +1,25 @@
+#ifndef _TREE_H_
+#define _TREE_H_
+
 #include <vector>
 #include <queue>
-#include <functional>
 #include <unordered_map>
-#include <utility>
 #include <string>
 
+namespace huffman_tree {
 class TreeNode {
     public:
-	size_t weight_;
-	char value_;
+	const size_t weight_;
+	const char value_;
 	TreeNode *left_children_, *right_children_;
 
-	TreeNode(char value = ' ', size_t weight = 0, TreeNode* left_children = nullptr, TreeNode* right_children = nullptr);
+	TreeNode(const char value = ' ', const size_t weight = 0, 
+		TreeNode* left_children = nullptr, TreeNode* right_children = nullptr);
 	~TreeNode();
 
 	class Compar {
 	public:
-	    bool operator()(TreeNode* a, TreeNode* b);
+	    bool operator()(const TreeNode* a, const TreeNode* b);
 	};
 };
 
@@ -34,4 +37,5 @@ class HuffTree {
 	TreeNode* get_root();
 	std::unordered_map< char, std::string >* get_code_table();
 };
-
+}
+#endif

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "tree.h"
 
+namespace huffman_tree {
 TreeNode::TreeNode(char value, size_t weight, TreeNode* left_children, TreeNode* right_children) :
     weight_(weight),
     value_(value),
@@ -11,7 +12,7 @@ TreeNode::~TreeNode() {
     delete left_children_; delete right_children_;
 }
 
-bool TreeNode::Compar::operator()(TreeNode* a, TreeNode* b) {
+bool TreeNode::Compar::operator()(const TreeNode* a, const TreeNode* b) {
     return a->weight_ > b->weight_;
 }
 
@@ -54,4 +55,5 @@ void HuffTree::gen_relative_code(TreeNode* head, std::string code) {
 
 std::unordered_map< char, std::string >* HuffTree::get_code_table() {
     return &code_table_;
+}
 }

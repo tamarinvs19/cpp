@@ -3,6 +3,7 @@ CXXFLAGS = -O2 -Wall -Werror -std=c++17 -Iinclude
 LDFLAGS = 
 
 EXE = hw_03
+EXE_TEST = hw_03_test
 SRCDIR = src
 OBJDIR = obj
 

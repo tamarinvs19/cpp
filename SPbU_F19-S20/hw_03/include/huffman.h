@@ -1,15 +1,15 @@
-#include <iostream>
+#ifndef _HUFFMAN_H_
+#define _HUFFMAN_H_
+
 #include <fstream>
 #include <vector>
-#include <queue>
-#include <functional>
 #include <unordered_map>
-#include <utility>
 #include <string>
 #include <tuple>
 
 #include "tree.h"
 
+namespace huffman_archiver {
 class HuffmanArchiver {
     private:
 	static const int DICT_SIZE = 256;
@@ -18,7 +18,7 @@ class HuffmanArchiver {
 	std::ofstream file_out_;
 	std::vector<int> stat_table_;
 
-	HuffTree* huff_tree_;
+	huffman_tree::HuffTree* huff_tree_;
 
 	void read_statistic();
 	void save_statistic();
@@ -31,4 +31,5 @@ class HuffmanArchiver {
 	void unarchivate();
 	std::tuple<int, int, int> get_info();
 };
-
+}
+#endif
