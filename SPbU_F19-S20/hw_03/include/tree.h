@@ -28,7 +28,6 @@ class HuffTree {
 	TreeNode* root;
 	std::unordered_map< char, std::string > code_table_;
     public:
-	HuffTree();
 	~HuffTree();
 
 	void build(std::vector<int> stat_table);

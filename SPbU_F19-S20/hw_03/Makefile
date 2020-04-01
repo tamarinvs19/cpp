@@ -19,7 +19,7 @@ $(EXE): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(EXE) $(LDFLAGS)
 	
 $(EXE_TEST): $(TEST_OBJECTS)
-	$(CXX) $(TEST_DIR)/test_main.cpp -o $(EXE_TEST) $(LDFLAGS)
+	$(CXX) $(TEST_OBJECTS) -o $(EXE_TEST) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp, $(TEST_DIR)/%.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c -MMD -o $@ $<

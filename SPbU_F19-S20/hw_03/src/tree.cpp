@@ -17,8 +17,6 @@ bool TreeNode::Compar::operator()(const TreeNode* a, const TreeNode* b) {
 }
 
 
-HuffTree::HuffTree() {}
-
 HuffTree::~HuffTree() {
     delete root;
 }
