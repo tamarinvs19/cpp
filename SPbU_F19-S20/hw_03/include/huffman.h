@@ -9,8 +9,15 @@
 
 #include "tree.h"
 
+namespace huffman_test {
+class HuffmanArchiverTest;
+}
+
 namespace huffman_archiver {
+#define once
+
 class HuffmanArchiver {
+    friend class huffman_test::HuffmanArchiverTest;
     private:
 	static const int DICT_SIZE = 256;
 

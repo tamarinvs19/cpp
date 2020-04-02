@@ -7,6 +7,8 @@
 #include <string>
 
 namespace huffman_tree {
+#define once
+
 class TreeNode {
     public:
 	const size_t weight_;

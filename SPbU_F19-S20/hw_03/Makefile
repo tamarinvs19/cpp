@@ -4,7 +4,7 @@ LDFLAGS =
 
 EXE = hw_03
 SRCDIR = src
-EXE_TEST = hw_03_test
+TEST_EXE = hw_03_test
 TEST_DIR = test
 OBJDIR = obj
 
@@ -13,15 +13,18 @@ TEST_OBJECTS = $(patsubst $(TEST_DIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(TEST_DIR)
 
 all: $(EXE)
 
-test: $(EXE_TEST)
+test: $(TEST_EXE)
 
 $(EXE): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(EXE) $(LDFLAGS)
-	
-$(EXE_TEST): $(TEST_OBJECTS)
-	$(CXX) $(TEST_OBJECTS) -o $(EXE_TEST) $(LDFLAGS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp, $(TEST_DIR)/%.cpp | $(OBJDIR)
+$(TEST_EXE): $(TEST_OBJECTS) obj/huffman.o obj/tree.o
+	$(CXX) obj/huffman.o obj/tree.o $(TEST_OBJECTS) -o $(TEST_EXE) $(LDFLAGS)
+	
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR) 
+	$(CXX) $(CXXFLAGS) -c -MMD -o $@ $<
+
+$(OBJDIR)/%.o: $(TEST_DIR)/%.cpp | $(OBJDIR) 
 	$(CXX) $(CXXFLAGS) -c -MMD -o $@ $<
 
 include $(wildcard $(OBJDIR)/*.d)
@@ -30,6 +33,6 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 clean:
-	rm -rf $(OBJDIR) $(EXE) $(EXE_TEST)
+	rm -rf $(OBJDIR) $(EXE) $(TEST_EXE) *.test_file
 
 .PHONY: clean all

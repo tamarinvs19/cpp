@@ -1,11 +1,12 @@
 #include <iostream>
-#include "autotest.cpp"
-#include "huffman_test.cpp"
+#include "huffman_test.h"
 
 int main()
 {
-    huffman_test::HuffmanTest test;
-    test.run_all_tests();
-    test.show_final_results();
+    huffman_test::HuffmanTreeTest test_tree;
+    test_tree.run_all_tests();
+    huffman_test::HuffmanArchiverTest test_arch;
+    test_arch.run_all_tests();
+    my_autotest::AutoTest::show_final_results();
     return 0;
 }
