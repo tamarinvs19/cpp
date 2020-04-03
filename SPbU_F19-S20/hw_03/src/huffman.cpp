@@ -1,3 +1,4 @@
+#include <iostream>
 #include <numeric>
 #include <bitset>
 #include <climits>
@@ -6,7 +7,7 @@
 #include "exceptions.h"
 
 namespace huffman_archiver {
-HuffmanArchiver::HuffmanArchiver(std::string file_in_name, std::string file_out_name) {
+HuffmanArchiver::HuffmanArchiver(const std::string file_in_name, const std::string file_out_name) {
     file_in_ = std::ifstream(file_in_name, std::istream::binary);
     if (!file_in_.is_open()) 
 	throw my_exception::MyException("Can not open input file!");
@@ -16,6 +17,7 @@ HuffmanArchiver::HuffmanArchiver(std::string file_in_name, std::string file_out_
     
     stat_table_ = std::vector<int>(HuffmanArchiver::DICT_SIZE, 0); 
     huff_tree_ = new huffman_tree::HuffTree();
+    additional_memory_size = 0;
 }
 
 HuffmanArchiver::~HuffmanArchiver() {
@@ -35,17 +37,26 @@ void HuffmanArchiver::calculate_statistic() {
     }
 }
 
+int len(int a) {
+    if (a >= 10)
+	return 1 + len(a/10);
+    else
+	return 1;
+}
+
 void HuffmanArchiver::save_statistic() {
     for (int c: stat_table_) {
-	file_out_ << c << "\n";
+	file_out_ << c << '\n';
+	additional_memory_size += len(c) + sizeof('\n');
 	if (!file_out_.good())
-	    throw my_exception::MyException("File writting error!");
+	    throw my_exception::MyException("File writing error!");
     }
 }
 
 void HuffmanArchiver::read_statistic() {
     for (size_t i = 0; i < DICT_SIZE; ++i) {
 	file_in_ >> stat_table_[i];
+	additional_memory_size += len(stat_table_[i]) + sizeof('\n');
 	if (!file_in_.good())
 	    throw my_exception::MyException("File reading error!");
     }
@@ -60,7 +71,7 @@ void HuffmanArchiver::archivate() {
     file_in_.clear();
     file_in_.seekg(0);
 
-    unsigned char symbol, c;
+    unsigned char symbol, c = 0;
     unsigned int cnt = 0;
     while (!file_in_.eof()) {
 	symbol = file_in_.get();
@@ -72,7 +83,7 @@ void HuffmanArchiver::archivate() {
 	    if (cnt == CHAR_BIT) {
 		file_out_.write((char*)&c, sizeof(char));
 		if (!file_out_.good())
-		    throw my_exception::MyException("File writting error!");
+		    throw my_exception::MyException("File writing error!");
 		c = 0; cnt = 0;
 	    }
 	}
@@ -80,7 +91,7 @@ void HuffmanArchiver::archivate() {
     if (cnt != 0) {
 	file_out_.write((char*)&c, sizeof(char));
 	if (!file_out_.good())
-	    throw my_exception::MyException("File writting error!");
+	    throw my_exception::MyException("File writing error!");
     }
 }
 
@@ -123,6 +134,6 @@ std::tuple<int, int, int> HuffmanArchiver::get_info() {
     file_in_.seekg(0, std::ifstream::end);
     file_out_.clear();
     file_out_.seekp(0, std::iostream::end);
-    return std::make_tuple(file_in_.tellg(), file_out_.tellp(), DICT_SIZE * (2 * sizeof(char)));
+    return std::make_tuple(file_in_.tellg(), file_out_.tellp(), additional_memory_size);
 }
 }

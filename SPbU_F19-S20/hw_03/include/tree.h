@@ -33,9 +33,9 @@ class HuffTree {
 	~HuffTree();
 
 	void build(std::vector<int> stat_table);
-	void gen_relative_code(TreeNode* head, std::string code="");
+	void gen_relative_code(const TreeNode* head, const std::string code="");
 
-	TreeNode* get_root();
+	TreeNode* get_root() const;
 	std::unordered_map< char, std::string >* get_code_table();
 };
 }

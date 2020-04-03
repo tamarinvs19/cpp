@@ -42,7 +42,7 @@ void HuffmanTreeTest::test_tree_node_compar_operator() {
     DO_CHECK(&n2 > &n1);
 }
 
-void HuffmanTreeTest::test_huff_tree_build_1() {
+void HuffmanTreeTest::test_huff_tree_build_3() {
     std::vector<int> stat_table = {0, 1, 2};
     huffman_tree::HuffTree ht;
     ht.build(stat_table);
@@ -62,7 +62,7 @@ void HuffmanTreeTest::test_huff_tree_build_2() {
     DO_CHECK(ht.get_root()->right_children_->weight_ == 2);
 }
 
-void HuffmanTreeTest::test_huff_tree_build_3() {
+void HuffmanTreeTest::test_huff_tree_build_1() {
     std::vector<int> stat_table = {1};
     huffman_tree::HuffTree ht;
     ht.build(stat_table);
@@ -147,19 +147,19 @@ HuffmanArchiverTest::HuffmanArchiverTest() {}
 
 void HuffmanArchiverTest::run_all_tests() {
     test_arch_constructor();
-    test_arch_calculate_statistic_1();
-    test_arch_calculate_statistic_2();
-    test_arch_calculate_statistic_3();
+    test_arch_calculate_statistic();
+    test_arch_calculate_statistic_equal_symbs();
+    test_arch_calculate_statistic_empty_file();
     test_arch_save_statistic_1();
     test_arch_save_statistic_2();
     test_arch_read_statistic_1();
     test_arch_read_statistic_2();
-    test_arch_archivate_1();
-    test_arch_archivate_2();
-    test_arch_archivate_3();
-    test_arch_archivate_4();
-    test_arch_get_info_1();
-    test_arch_get_info_2();
+    test_arch_archivate_random_symbs();
+    test_arch_archivate_many_equal_symbs();
+    test_arch_archivate_emply_file();
+    test_arch_archivate_few_lines();
+    test_arch_get_info_after_unarchivate();
+    test_arch_get_info_after_archivate();
 }
 
 void HuffmanArchiverTest::test_arch_constructor() {
@@ -169,9 +169,10 @@ void HuffmanArchiverTest::test_arch_constructor() {
     huffman_archiver::HuffmanArchiver ha = huffman_archiver::HuffmanArchiver("constr_in.test_file", "constr_out.test_file");
     DO_CHECK(ha.file_in_.is_open());
     DO_CHECK(ha.file_out_.is_open());
+    DO_CHECK(ha.additional_memory_size == 0);
     DO_CHECK(ha.stat_table_.size() == huffman_archiver::HuffmanArchiver::DICT_SIZE);
 }
-void HuffmanArchiverTest::test_arch_calculate_statistic_1() {
+void HuffmanArchiverTest::test_arch_calculate_statistic() {
     std::ofstream fin = std::ofstream("stat_in.test_file", std::ostream::binary);
     fin << "test file ";
     fin.close();
@@ -186,7 +187,7 @@ void HuffmanArchiverTest::test_arch_calculate_statistic_1() {
 	    ha.stat_table_[(int)'i'] == 1 &&
 	    ha.stat_table_[(int)'l'] == 1);
 }
-void HuffmanArchiverTest::test_arch_calculate_statistic_2() {
+void HuffmanArchiverTest::test_arch_calculate_statistic_equal_symbs() {
     std::ofstream fin = std::ofstream("stat_in_2.test_file", std::ostream::binary);
     fin << "tttttttttt";
     fin.close();
@@ -194,7 +195,7 @@ void HuffmanArchiverTest::test_arch_calculate_statistic_2() {
     ha.calculate_statistic();
     DO_CHECK(ha.stat_table_[(int)'t'] == 11);
 }
-void HuffmanArchiverTest::test_arch_calculate_statistic_3() {
+void HuffmanArchiverTest::test_arch_calculate_statistic_empty_file() {
     std::ofstream fin = std::ofstream("stat_in.test_file", std::ostream::binary);
     fin << "";
     fin.close();
@@ -255,7 +256,7 @@ void HuffmanArchiverTest::test_arch_read_statistic_2() {
     delete ha1;
 }
 
-void HuffmanArchiverTest::test_arch_archivate_1() {
+void HuffmanArchiverTest::test_arch_archivate_random_symbs() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "qwertyuiop[]':lkjhgfdsazxcvbnm,./?><MNBVCXZASDFGHJKL;/}{POIUYTREWQ!@#$%^&*()_+";
     f << ts;
@@ -273,7 +274,7 @@ void HuffmanArchiverTest::test_arch_archivate_1() {
     DO_CHECK(out == ts);
 }
 
-void HuffmanArchiverTest::test_arch_archivate_2() {
+void HuffmanArchiverTest::test_arch_archivate_many_equal_symbs() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     f << ts;
@@ -292,7 +293,7 @@ void HuffmanArchiverTest::test_arch_archivate_2() {
     fout.close();
 }
 
-void HuffmanArchiverTest::test_arch_archivate_3() {
+void HuffmanArchiverTest::test_arch_archivate_emply_file() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "";
     f << ts;
@@ -311,7 +312,7 @@ void HuffmanArchiverTest::test_arch_archivate_3() {
     fout.close();
 }
 
-void HuffmanArchiverTest::test_arch_archivate_4() {
+void HuffmanArchiverTest::test_arch_archivate_few_lines() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "aaa\nbbb\nccc\ndddd";
     f << ts;
@@ -335,7 +336,7 @@ void HuffmanArchiverTest::test_arch_archivate_4() {
     DO_CHECK(out == "dddd");
     fout.close();
 }
-void HuffmanArchiverTest::test_arch_get_info_1() {
+void HuffmanArchiverTest::test_arch_get_info_after_archivate() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "aaaa";
     f << ts;
@@ -352,7 +353,7 @@ void HuffmanArchiverTest::test_arch_get_info_1() {
     delete ha;
 }
 
-void HuffmanArchiverTest::test_arch_get_info_2() {
+void HuffmanArchiverTest::test_arch_get_info_after_unarchivate() {
     std::ofstream f = std::ofstream("test_in.test_file");
     std::string ts = "aaaa";
     f << ts;
@@ -364,6 +365,10 @@ void HuffmanArchiverTest::test_arch_get_info_2() {
     huffman_archiver::HuffmanArchiver *ha1 = new huffman_archiver::HuffmanArchiver("test_out.test_file", "test_in1.test_file");
     ha1->unarchivate();
     std::tuple <int, int, int> info = ha1->get_info();
+    std::cout <<
+	    std::get<0>(info)<<
+	    std::get<1>(info)<<
+	    std::get<2>(info) << std::endl;
     DO_CHECK(
 	    std::get<0>(info) == 522 &&
 	    std::get<1>(info) == 4 &&

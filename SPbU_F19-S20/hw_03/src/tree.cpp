@@ -38,11 +38,11 @@ void HuffTree::build(std::vector<int> stat_table) {
     root = nodes.top();
 }
 
-TreeNode* HuffTree::get_root() {
+TreeNode* HuffTree::get_root() const {
     return root;
 }
 
-void HuffTree::gen_relative_code(TreeNode* head, std::string code) {
+void HuffTree::gen_relative_code(const TreeNode* head, const std::string code) {
     if (head->left_children_ == nullptr || head->right_children_ == nullptr) 
 	code_table_[head->value_] = code;
     else {

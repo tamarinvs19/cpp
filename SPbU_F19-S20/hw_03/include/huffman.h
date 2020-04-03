@@ -20,6 +20,7 @@ class HuffmanArchiver {
     friend class huffman_test::HuffmanArchiverTest;
     private:
 	static const int DICT_SIZE = 256;
+	size_t additional_memory_size;
 
 	std::ifstream file_in_;
 	std::ofstream file_out_;
@@ -31,7 +32,7 @@ class HuffmanArchiver {
 	void save_statistic();
 	void calculate_statistic();
     public:
-	HuffmanArchiver(std::string file_in_name, std::string file_out_name);
+	HuffmanArchiver(const std::string file_in_name, const std::string file_out_name);
 	~HuffmanArchiver();
 
 	void archivate();
