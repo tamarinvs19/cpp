@@ -365,10 +365,6 @@ void HuffmanArchiverTest::test_arch_get_info_after_unarchivate() {
     huffman_archiver::HuffmanArchiver *ha1 = new huffman_archiver::HuffmanArchiver("test_out.test_file", "test_in1.test_file");
     ha1->unarchivate();
     std::tuple <int, int, int> info = ha1->get_info();
-    std::cout <<
-	    std::get<0>(info)<<
-	    std::get<1>(info)<<
-	    std::get<2>(info) << std::endl;
     DO_CHECK(
 	    std::get<0>(info) == 522 &&
 	    std::get<1>(info) == 4 &&
